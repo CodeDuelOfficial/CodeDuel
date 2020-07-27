@@ -3,6 +3,9 @@
 
 CodeDuel is a developer platform where you can duel your opponents using your code.
 
+# 💥Our Website💥
+ http://code-duel.com/
+
 # 💥Screen shots💥
 
   * Login-Register(BETA) screen sample use

@@ -7,9 +7,9 @@ import sys
 
 
 
-class MainWindow(QWidget):
+class HomeScreen(QWidget):
     def __init__(self):
-        super(MainWindow , self).__init__()
+        super(HomeScreen , self).__init__()
         self.mainLayout = QVBoxLayout()
         self.mainLayout.addWidget(TitleBar(self))
         #all objects layout
@@ -414,6 +414,6 @@ class TitleBar(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    ex = MainWindow()
+    ex = HomeScreen()
     ex.show()
     sys.exit(app.exec_())

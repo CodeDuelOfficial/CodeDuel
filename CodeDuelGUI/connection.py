@@ -4,7 +4,7 @@ import socket
 
 
 class Connection:
-	"""docstring for ClassName"""
+	"""Connection class for Client Connection"""
 	def __init__(self, host, port, encode_format ):
 		
 		self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

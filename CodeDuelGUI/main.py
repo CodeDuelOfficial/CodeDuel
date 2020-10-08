@@ -1,5 +1,5 @@
 """
-@author: Emircan DEMİRCİ(Venoox)
+@author: Efe Osman ASLANOĞLU (PyroSoft) , Emircan DEMİRCİ(Venoox)
 @date: 8.10.2020
 """
 from homescreenn import*

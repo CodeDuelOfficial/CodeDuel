@@ -7,7 +7,7 @@ class Main():
         # Send Connecion request to the server
         self.connect()
         # Initialize GUI Forms
-        self.loginregister = LoginForm(app)
+        self.loginregister = LoginForm()
         
     def start(self):
         self.loginregister.show()

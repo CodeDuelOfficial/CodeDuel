@@ -9,10 +9,8 @@ from PyQt5.QtCore import QCoreApplication, Qt,QBasicTimer, QPoint
 import sys
 
 class LoginForm(QWidget):
-    def __init__(self ,app):
+    def __init__(self):
         super().__init__()
-
-        self.app = app
 
         self.mwidget = QMainWindow(self)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -84,7 +82,7 @@ class LoginForm(QWidget):
 
     #closebutton
     def closeboxEvent(self):
-    	self.app.quit()
+    	self.close()
 
     #minimizebutton
     def minimizeboxEvent(self):

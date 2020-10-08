@@ -8,14 +8,16 @@ class Main():
         self.connect()
         # Initialize GUI Forms
         self.loginregister = LoginForm()
+
+        self.homescreen = HomeScreen()
+
         
     def start(self):
         self.loginregister.show()
+        self.homescreen.show()
         
     def connect(self):
-        self.conn = Connection(socket.gethostname(), 8080 , 'utf-8')
-        self.connloop = self.conn.start()
-    
+        pass
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

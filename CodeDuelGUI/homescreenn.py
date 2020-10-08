@@ -10,9 +10,9 @@ from PyQt5.QtCore import*
 from PyQt5.QtGui import*
 import sys
 
-class MainWindow(QWidget):
+class HomeScreen(QWidget):
     def __init__(self):
-        super(MainWindow , self).__init__()
+        super(HomeScreen , self).__init__()
         self.mainLayout = QVBoxLayout()
         self.mainLayout.addWidget(TitleBar(self))
         #all objects layout

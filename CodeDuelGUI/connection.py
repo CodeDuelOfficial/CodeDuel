@@ -25,7 +25,7 @@ class Connection:
 	def recv(self, buffer):
 		return json.loads(self.conn.recv(buffer).encode(self.encode_format))
 
-	def start(self): # isim bulcam start olmasın ama ya
+	def start(self):
 
 		while self.state:
 			

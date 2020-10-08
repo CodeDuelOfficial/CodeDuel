@@ -9,10 +9,10 @@ from PyQt5.QtCore import QCoreApplication, Qt,QBasicTimer, QPoint
 import sys
 
 class LoginForm(QWidget):
-    def __init__(self):
+    def __init__(self ,app):
         super().__init__()
 
-
+        self.app = app
 
         self.mwidget = QMainWindow(self)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -64,8 +64,6 @@ class LoginForm(QWidget):
 
         self.oldPos = self.pos()
 
-        self.show()
-
 
 
     #center
@@ -86,7 +84,7 @@ class LoginForm(QWidget):
 
     #closebutton
     def closeboxEvent(self):
-    	app.quit()
+    	self.app.quit()
 
     #minimizebutton
     def minimizeboxEvent(self):
@@ -237,8 +235,3 @@ class LoginForm(QWidget):
         self.regButton.setFont(QFont('Arial' , 8))
         self.regButton.setStyleSheet("background-color:rgb(35,35,35);color:rgb(175,93,72)")
         self.stacked_widget3.setCurrentIndex(0)
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    ex = LoginForm()
-    sys.exit(app.exec_())

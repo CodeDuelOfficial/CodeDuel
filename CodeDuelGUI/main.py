@@ -1,8 +1,7 @@
-#
-#####
-#Created By Venoox and Pyrosoft on 08.10.2020
-#####
-#
+"""
+@author: Emircan DEMİRCİ(Venoox)
+@date: 8.10.2020
+"""
 from homescreenn import*
 from loginregister import*
 from connection import*

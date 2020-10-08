@@ -1,3 +1,7 @@
+"""
+@author: Efe Osman ASLANOĞLU (PyroSoft)
+@date: 8.10.2020
+"""
 import json
 import time
 import socket

@@ -179,6 +179,7 @@ class LoginForm(QWidget):
         self.logbutton.setFont(QFont('Arial' , 8))
         self.logbutton.setStyleSheet("background-color:gray;color:rgb(175,93,72)")
 
+
         self.stacked_widget3.setCurrentIndex(1)
     
     def registerDB(self):

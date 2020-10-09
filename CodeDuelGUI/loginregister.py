@@ -12,12 +12,12 @@ from PyQt5.QtCore import QCoreApplication, Qt,QBasicTimer, QPoint
 import sys
 
 class LoginForm(QWidget):
+    commands = {"login": None, "register": None}
     def __init__(self):
         super().__init__()
 
         self.mwidget = QMainWindow(self)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-
 
         self.stacked_widget3 = QStackedWidget(self)
         self.stacked_widget3.setGeometry(0,70,600,400)
@@ -66,7 +66,13 @@ class LoginForm(QWidget):
         self.oldPos = self.pos()
 
 
+    @classmethod
+    def command(cls,name):
+        assert (name in cls.commands)
 
+        def getFunc(func):
+            cls.commands[name] = func
+        return getFunc
     #center
     def center(self):
         qr = self.frameGeometry()
@@ -236,3 +242,5 @@ class LoginForm(QWidget):
         self.regButton.setFont(QFont('Arial' , 8))
         self.regButton.setStyleSheet("background-color:rgb(35,35,35);color:rgb(175,93,72)")
         self.stacked_widget3.setCurrentIndex(0)
+    
+

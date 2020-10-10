@@ -12,7 +12,7 @@ from PyQt5.QtCore import QCoreApplication, Qt,QBasicTimer, QPoint
 import sys
 
 class LoginForm(QWidget):
-    commands = {"login": None, "register": None}
+    binds = {"login": None, "register": None}
     def __init__(self):
         super().__init__()
 
@@ -68,10 +68,10 @@ class LoginForm(QWidget):
 
     @classmethod
     def command(cls,name):
-        assert (name in cls.commands)
+        assert (name in cls.binds)
 
         def getFunc(func):
-            cls.commands[name] = func
+            cls.binds[name] = func
         return getFunc
     #center
     def center(self):

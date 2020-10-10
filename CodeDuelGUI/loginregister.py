@@ -111,7 +111,8 @@ class LoginForm(QWidget):
             letsgoerror.setWindowIcon(QIcon("Buttons/warning.png"))
             letsgoerror.exec_()
         else:
-            pass
+            username , email , passwd = self.username.text() , self.emailtext.text() , self.passtextbox.text()
+            self.binds["register"]()
     
     #registerlabel
     def registerLabelClicked(self):
@@ -202,7 +203,7 @@ class LoginForm(QWidget):
         else:
             pass
     def logButtonClicked(self):
-                #usernamelabel
+        #usernamelabel
         self.label2 = QLabel("Email" , self.login_page)
         self.label2.setFont(QFont('Arial' , 20))
         self.label2.setGeometry(100,20,100,40)

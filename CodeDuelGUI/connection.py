@@ -3,7 +3,6 @@
 @author: Efe Osman ASLANOĞLU (PyroSoft)
 @date: 8.10.2020
 """
-import json
 import time
 import socket
 
@@ -11,9 +10,7 @@ import socket
 class Connection:
 	"""Connection class for Client Connection"""
 	def __init__(self, host, port, encode_format ):
-		
 		self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
 		self.host, self.port = host, port 
 		self.conn.connect((self.host, self.port))
 
@@ -24,9 +21,9 @@ class Connection:
 		self.conn.send(bytes(data, self.encode_format))
 
 	def recv(self, buffer):
-		return json.loads(self.conn.recv(buffer).encode(self.encode_format))
+		return self.conn.recv(buffer).encode(self.encode_format)
 
-	def start(self): # isim bulcam start olmasın ama ya
+	def start(self):
 
 		while self.state:
 			

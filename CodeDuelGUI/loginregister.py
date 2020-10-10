@@ -111,8 +111,8 @@ class LoginForm(QWidget):
             letsgoerror.setWindowIcon(QIcon("Buttons/warning.png"))
             letsgoerror.exec_()
         else:
-            username , email , passwd = self.username.text() , self.emailtext.text() , self.passtextbox.text()
-            self.binds["register"]()
+
+            command_result = self.binds["login"](username, email, passwd) # burda sana komutu serverde işleyecek ve sonucu gönderecek sen o sonucu işleyeceksin 
     
     #registerlabel
     def registerLabelClicked(self):

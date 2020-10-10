@@ -3,18 +3,20 @@
 @author:  Efe Osman ASLANOĞLU (PyroSoft) ,  Emircan DEMİRCİ(Venoox)
 @date: 8.10.2020
 """
-
+import json
 from homescreenn import*
 from loginregister import*
 from connection import*
 
 @LoginForm.command(name = "login")
 def login(email,password):
-    return conn.send({"email": email, "password": password})
+    values = {"email": email, "password": password}
+    return conn.send(json.dumps({"command": "login", "values": values))
 
 @LoginForm.command(name = "register")
 def register(username,email,password):
-    return conn.send({"username": username, "email": email, "password": password})
+    values = {"username": username, "email": email, "password": password}
+    return conn.send(json.dumps({"command": "register", "values": values))
 
 class Main():
     def __init__(self, conn):

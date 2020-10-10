@@ -111,8 +111,8 @@ class LoginForm(QWidget):
             letsgoerror.setWindowIcon(QIcon("Buttons/warning.png"))
             letsgoerror.exec_()
         else:
-            username , email , passwd = self.username.text() , self.emailtext.text() , self.passtextbox.text()
-            self.binds["register"]()
+            email , passwd = self.ustextbox.text() , self.passtextbox.text()
+            command_result = self.binds["login"](email, passwd)
     
     #registerlabel
     def registerLabelClicked(self):
@@ -209,8 +209,7 @@ class LoginForm(QWidget):
         self.label2.setGeometry(100,20,100,40)
         self.label2.setStyleSheet("color:#BFBFBF;")
 
-        
-
+    
         # usernametextbox
         self.ustextbox = QLineEdit(self.login_page)
         self.ustextbox.move(250,22)

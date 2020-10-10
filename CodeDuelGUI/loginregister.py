@@ -102,7 +102,7 @@ class LoginForm(QWidget):
         
     #letsgobuttondb
     def letsgoDB(self):
-        if self.ustextbox.text() == "" or self.passtextbox.text() == "":
+        if self.login_email_textbox.text() == "" or self.passtextbox.text() == "":
             letsgoerror = QMessageBox()
             letsgoerror.setStyleSheet("background-color:dimgray;color:silver;")
             letsgoerror.setText("Please fill in all blanks")
@@ -111,7 +111,7 @@ class LoginForm(QWidget):
             letsgoerror.setWindowIcon(QIcon("Buttons/warning.png"))
             letsgoerror.exec_()
         else:
-            email , passwd = self.ustextbox.text() , self.passtextbox.text()
+            email , passwd = self.login_email_textbox.text() , self.passtextbox.text()
             command_result = self.binds["login"](email, passwd)
     
     #registerlabel
@@ -201,7 +201,8 @@ class LoginForm(QWidget):
             passworderror.setWindowIcon(QIcon("Buttons/warning.png"))
             passworderror.exec_()
         else:
-            pass
+            username, email, passwd = self.ustextbox.text() , self.emailtext.text() , self.passtextbox1.text()
+            command_result = self.binds["register"](username, email, passwd)
     def logButtonClicked(self):
         #usernamelabel
         self.label2 = QLabel("Email" , self.login_page)
@@ -211,10 +212,10 @@ class LoginForm(QWidget):
 
     
         # usernametextbox
-        self.ustextbox = QLineEdit(self.login_page)
-        self.ustextbox.move(250,22)
-        self.ustextbox.resize(300,30)
-        self.ustextbox.setStyleSheet("border: 3px solid dimgray;border-style:outset;border-width:2px;border-radius:10px;color:silver")
+        self.login_email_textbox = QLineEdit(self.login_page)
+        self.login_email_textbox.move(250,22)
+        self.login_email_textbox.resize(300,30)
+        self.login_email_textbox.setStyleSheet("border: 3px solid dimgray;border-style:outset;border-width:2px;border-radius:10px;color:silver")
 
         #passtextbox
         self.passtextbox = QLineEdit(self.login_page)

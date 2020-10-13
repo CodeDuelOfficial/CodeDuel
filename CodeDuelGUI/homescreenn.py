@@ -13,7 +13,7 @@ import sys
 class HomeScreen(QWidget):
     def __init__(self):
         super(HomeScreen , self).__init__()
-        self.mainLayout = QVBoxLayout()
+        self.mainLayout = QVBoxLayout() #apps main layout
         self.mainLayout.addWidget(TitleBar(self))
         #all objects layout
         self.objectsLayout = QHBoxLayout()
@@ -42,9 +42,9 @@ class HomeScreen(QWidget):
         self.mainLayout.addLayout(self.objectsLayout)
 
         #all friends page layout
-        self.allfriends_page_layouts = QVBoxLayout()
-        self.allfriends_page_layouts.setContentsMargins(0,0,5,0)
-        self.allfriends_page_layouts.addSpacing(0)
+        self.friends_page_objects_layout = QVBoxLayout()
+        self.friends_page_objects_layout.setContentsMargins(0,0,5,0)
+        self.friends_page_objects_layout.addSpacing(0)
         #main friends layout
         self.myFriendsLayout = QVBoxLayout()
         self.myFriendsLayout.setContentsMargins(0,0,0,0)
@@ -73,15 +73,15 @@ class HomeScreen(QWidget):
         #######################################
         ##Left Menus
         #######################################
-        self.menus_stacked_widget = QStackedWidget()
-        self.menus_stacked_widget.setFixedWidth(100)
-        self.menusLayout.addWidget(self.menus_stacked_widget)
+        self.all_left_menus_stacked_wiget = QStackedWidget()
+        self.all_left_menus_stacked_wiget.setFixedWidth(100)
+        self.menusLayout.addWidget(self.all_left_menus_stacked_wiget)
 
         self.main_left_menu_widget = QWidget()
-        self.menus_stacked_widget.addWidget(self.main_left_menu_widget)
+        self.all_left_menus_stacked_wiget.addWidget(self.main_left_menu_widget)
 
-        self.profile_menu = QWidget()
-        self.menus_stacked_widget.addWidget(self.profile_menu)
+        self.profile_page_left_menu_widget = QWidget()
+        self.all_left_menus_stacked_wiget.addWidget(self.profile_page_left_menu_widget)
 
         #######################################
         ##Main Objects 
@@ -99,17 +99,17 @@ class HomeScreen(QWidget):
         self.friends_screen_widget = QWidget()
         self.main_objects_stacked_widget.addWidget(self.friends_screen_widget)
 
-        self.friends_screen_widget.setLayout(self.allfriends_page_layouts)
-        self.allfriends_page_layouts.addLayout(self.friendsmenu_layout , Qt.AlignTop)
+        self.friends_screen_widget.setLayout(self.friends_page_objects_layout)
+        self.friends_page_objects_layout.addLayout(self.friendsmenu_layout , Qt.AlignTop)
 
-        self.profile_menu_widget = QWidget()
-        self.main_objects_stacked_widget.addWidget(self.profile_menu_widget)
-        self.profile_menu_widget.setLayout(self.profile_page_layout)
+        self.profile_page_layout = QWidget()
+        self.main_objects_stacked_widget.addWidget(self.profile_page_layout)
+        self.profile_page_layout.setLayout(self.profile_page_layout)
         ################################################################################
         ##Friends Menu Widgets
         #################################################################################
         self.friends_Stacked_widget = QStackedWidget()
-        self.allfriends_page_layouts.addWidget(self.friends_Stacked_widget)
+        self.friends_page_objects_layout.addWidget(self.friends_Stacked_widget)
 
         self.myFriendsWidget = QWidget()
         self.friends_Stacked_widget.addWidget(self.myFriendsWidget)
@@ -119,9 +119,9 @@ class HomeScreen(QWidget):
         self.friends_Stacked_widget.addWidget(self.pending_rqst_widget)
         self.pending_rqst_widget.setLayout(self.pending_rqst_Layout)
 
-        self.search_friends_widget = QWidget()
-        self.friends_Stacked_widget.addWidget(self.search_friends_widget)
-        self.search_friends_widget.setLayout(self.searchLayout)
+        self.search_lineedit_widget = QWidget()
+        self.friends_Stacked_widget.addWidget(self.search_lineedit_widget)
+        self.search_lineedit_widget.setLayout(self.searchLayout)
 
 
         #objects
@@ -177,8 +177,8 @@ class HomeScreen(QWidget):
         self.friends_btn.clicked.connect(self.friends_btn_clicked)
         self.friends_btn.setIconSize(QSize(20,20))
 
-        #profile left menu
-        self.go_to_mainmenu = QPushButton('' , self.profile_menu)
+        #profile page left menu object
+        self.go_to_mainmenu = QPushButton('' , self.profile_page_left_menu_widget)
         self.go_to_mainmenu.setIcon(QIcon("Buttons/settingsGoBackbtn.png"))
         self.go_to_mainmenu.setGeometry(10,10,35,35)
         self.go_to_mainmenu.setStyleSheet("""QPushButton{
@@ -210,15 +210,15 @@ class HomeScreen(QWidget):
         self.codeDuel_label.setFont(QFont('Arial' , 15))
         self.main_page_layout.addWidget(self.codeDuel_label)
 
-        self.what_is = QLabel("<h2>What is <font color = 'red'>Code</font><font color = 'orange'>Duel</font>?</h2>" , self.mainscreen_objects_widget)
-        self.what_is.setStyleSheet("""QLabel{
+        self.what_is_app_title = QLabel("<h2>What is <font color = 'red'>Code</font><font color = 'orange'>Duel</font>?</h2>" , self.mainscreen_objects_widget)
+        self.what_is_app_title.setStyleSheet("""QLabel{
             color:#F2F2EB;
             margin-left:10px;
         }""")
-        self.what_is.setFixedHeight(60)
-        self.what_is.setFont(QFont('Arial' , 15))
-        self.what_is.setAlignment(Qt.AlignLeft)
-        self.main_page_vbox.addWidget(self.what_is)
+        self.what_is_app_title.setFixedHeight(60)
+        self.what_is_app_title.setFont(QFont('Arial' , 15))
+        self.what_is_app_title.setAlignment(Qt.AlignLeft)
+        self.main_page_vbox.addWidget(self.what_is_app_title)
         self.about_codeDuel = QLabel("<strong>With CodeDuel, you can fight codes with your friends.The first person <br>who finds the problem will win the duel.<br>If you are new, you can learn the game from our site!<br><a href='http://code-duel.com/'><font color = red>Code</font><font color = orange>Duel</font></a></strong>" , self.mainscreen_objects_widget)
         self.about_codeDuel.setOpenExternalLinks(True)
         self.about_codeDuel.setFont(QFont('Arial' ,20))
@@ -230,7 +230,7 @@ class HomeScreen(QWidget):
         self.main_page_vbox.addWidget(self.about_codeDuel)
         
         ##################################
-        ##profile menu
+        ##profile page
         ##################################
         self.match_number = 0
         self.previous_matches = QLabel("Previous Matches:" + str(self.match_number))
@@ -264,22 +264,23 @@ class HomeScreen(QWidget):
         ###########################################################
         ##Friends Screen
         ###########################################################
+
         #search page
-        self.search_label = QLabel("check the name or the 4 digit number!")
-        self.search_label.setAlignment(Qt.AlignCenter)
-        self.search_label.setFont(QFont('Arial' , 25))
-        self.search_label.setStyleSheet("color:#F2F2EB")
+        self.search_page_label = QLabel("check the name or the 4 digit number!")
+        self.search_page_label.setAlignment(Qt.AlignCenter)
+        self.search_page_label.setFont(QFont('Arial' , 25))
+        self.search_page_label.setStyleSheet("color:#F2F2EB")
         
         #pending requests page
-        self.pendingrqst_label = QLabel("You dont have any requests.")
-        self.pendingrqst_label.setAlignment(Qt.AlignCenter)
-        self.pendingrqst_label.setFont(QFont('Arial' , 25))
-        self.pendingrqst_label.setStyleSheet("color:#F2F2EB")
+        self.pendingrqst_page_label = QLabel("You dont have any requests.")
+        self.pendingrqst_page_label.setAlignment(Qt.AlignCenter)
+        self.pendingrqst_page_label.setFont(QFont('Arial' , 25))
+        self.pendingrqst_page_label.setStyleSheet("color:#F2F2EB")
         #my friends page
-        self.ı_hopeyou_havefriend = QLabel("I hope you have friends :(")
-        self.ı_hopeyou_havefriend.setAlignment(Qt.AlignCenter)
-        self.ı_hopeyou_havefriend.setFont(QFont('Arial' , 25))
-        self.ı_hopeyou_havefriend.setStyleSheet("color:#F2F2EB")
+        self.myfriends_page_label = QLabel("I hope you have friends :(")
+        self.myfriends_page_label.setAlignment(Qt.AlignCenter)
+        self.myfriends_page_label.setFont(QFont('Arial' , 25))
+        self.myfriends_page_label.setStyleSheet("color:#F2F2EB")
 
         #friends menu
         self.my_friends_btn = QPushButton("My Friends")
@@ -306,11 +307,11 @@ class HomeScreen(QWidget):
         }""")
         self.pending_rqst_btn.clicked.connect(self.pending_rqst_btn_cliked)
 
-        self.search_friends = QLineEdit()
-        self.search_friends.setPlaceholderText("Search your friends, you must write name#0000")
-        self.search_friends.setFixedSize(400,30)
-        self.search_friends.setFont(QFont('Arial' , 10))
-        self.search_friends.setStyleSheet("""QLineEdit{
+        self.search_lineedit = QLineEdit()
+        self.search_lineedit.setPlaceholderText("Search your friends, you must write name#0000")
+        self.search_lineedit.setFixedSize(400,30)
+        self.search_lineedit.setFont(QFont('Arial' , 10))
+        self.search_lineedit.setStyleSheet("""QLineEdit{
             border: 3px solid #5C5C5C;
             color:#F2F2EB;
             background-color:#5c5c5c
@@ -328,24 +329,33 @@ class HomeScreen(QWidget):
         }""")
         self.search_btn.clicked.connect(self.search_btn_clicked)
 
-
+        #ghost label (inactive label)
         self.ghostLabel2 = QLabel()
         self.ghostLabel2.setStyleSheet("""background-color:#8C8C8C;""")
         self.ghostLabel2.setAlignment(Qt.AlignCenter)
         self.ghostLabel2.setFixedHeight(30)
 
+        ##########################################
+        ##Layouts
+        #########################################
+
+        #friends top menu
         self.friendsmenu_layout.addWidget(self.my_friends_btn)
         self.friendsmenu_layout.addWidget(self.pending_rqst_btn)
         self.friendsmenu_layout.addWidget(self.ghostLabel2)
-        self.friendsmenu_layout.addWidget(self.search_friends)
+        self.friendsmenu_layout.addWidget(self.search_lineedit)
         self.friendsmenu_layout.addWidget(self.search_btn)
 
-        self.myFriendsLayout.addWidget(self.ı_hopeyou_havefriend)
+        #my friends page
+        self.myFriendsLayout.addWidget(self.myfriends_page_label)
 
-        self.pending_rqst_Layout.addWidget(self.pendingrqst_label)
+        #pending requests page
+        self.pending_rqst_Layout.addWidget(self.pendingrqst_page_label)
 
-        self.searchLayout.addWidget(self.search_label)
+        #search page
+        self.searchLayout.addWidget(self.search_page_label)
 
+        #profile page
         self.profile_page_layout.addWidget(self.profile_page_photo)
         self.profile_page_layout.addWidget(self.profile_name_label)
         self.profile_page_layout.addWidget(self.previous_matches)
@@ -356,29 +366,35 @@ class HomeScreen(QWidget):
     #home button clicked
     def home_button_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(0)
+
     #friends button clicked
     def friends_btn_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(1)
 
+    #friends page topmenu my friends button clicked
     def my_friends_btn_clicked(self):
         self.friends_Stacked_widget.setCurrentIndex(0)
 
+    #friends page topmenu pending requests button clicked
     def pending_rqst_btn_cliked(self):
         self.friends_Stacked_widget.setCurrentIndex(1)
 
+    #friends page topmenu search button clicked
     def search_btn_clicked(self):
         self.friends_Stacked_widget.setCurrentIndex(2)
-    
+
+    #main left menu profile photo clicked
     def profile_photo_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(2)
-        self.menus_stacked_widget.setCurrentIndex(1)
+        self.all_left_menus_stacked_wiget.setCurrentIndex(1)
 
+    #profile page go to main menu button (<-)
     def go_to_mainmenu_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(0)
-        self.menus_stacked_widget.setCurrentIndex(0)
+        self.all_left_menus_stacked_wiget.setCurrentIndex(0)
     
 
-
+#titlebar
 class TitleBar(QWidget):
     def __init__(self, parent):
         super(TitleBar, self).__init__()

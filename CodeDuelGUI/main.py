@@ -4,8 +4,8 @@
 @date: 8.10.2020
 """
 import json
-from homescreenn import*
-from loginregister import*
+from homescreen import*
+from loginform import*
 from connection import*
 
 @LoginForm.bind(name = "login")

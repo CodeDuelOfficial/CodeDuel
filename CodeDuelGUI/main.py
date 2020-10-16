@@ -11,12 +11,12 @@ from connection import*
 @LoginForm.bind(name = "login")
 def login(email,password):
     values = {"email": email, "password": password}
-    return conn.send(json.dumps({"command": "login", "values":values}))
+    return conn.send(bytes(json.dumps({"command": "login", "values":values}), 'utf-8'))
 
 @LoginForm.bind(name = "register")
 def register(username,email,password):
     values = {"username": username, "email": email, "password": password}
-    return conn.send(json.dumps({"command": "register", "values": values}))
+    return conn.send(bytes(json.dumps({"command": "register", "values": values}), 'utf-8'))
 
 class Main():
     def __init__(self, conn):

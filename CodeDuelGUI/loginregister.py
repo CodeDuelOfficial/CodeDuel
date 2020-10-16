@@ -100,7 +100,7 @@ class LoginForm(QWidget):
     ##server-side
     ####################################
     @classmethod
-    def command(cls,name):
+    def bind(cls,name):
         assert (name in cls.binds)
 
         def getFunc(func):

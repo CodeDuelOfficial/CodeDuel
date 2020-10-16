@@ -8,15 +8,15 @@ from homescreenn import*
 from loginregister import*
 from connection import*
 
-@LoginForm.command(name = "login")
+@LoginForm.bind(name = "login")
 def login(email,password):
     values = {"email": email, "password": password}
-    return conn.send(json.dumps({"command": "login", "values": values))
+    return conn.send(json.dumps({"command": "login", "values":values}))
 
-@LoginForm.command(name = "register")
+@LoginForm.bind(name = "register")
 def register(username,email,password):
     values = {"username": username, "email": email, "password": password}
-    return conn.send(json.dumps({"command": "register", "values": values))
+    return conn.send(json.dumps({"command": "register", "values": values}))
 
 class Main():
     def __init__(self, conn):

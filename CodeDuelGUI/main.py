@@ -29,7 +29,10 @@ class Main():
     def start(self):
         self.loginform.show()
         if self.loginform.get_state():
+            self.loginform.closeboxEvent()
             self.homescreen.show()
+
+
         
     
 

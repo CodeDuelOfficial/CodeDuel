@@ -70,7 +70,12 @@ class LoginForm(QWidget):
         self.minimizebox.setStyleSheet("background-color:gray;color:white;")
 
         self.oldPos = self.pos()
-
+        
+        # state: Logined?
+        self.state = False
+    # Get State: Logined?
+    def get_state():
+        return state
     #titlebar movement functions
     def center(self):
         qr = self.frameGeometry()

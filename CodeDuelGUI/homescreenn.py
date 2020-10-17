@@ -510,8 +510,3 @@ class TitleBar(QWidget):
             self.btn_max.setText("☐")
             self.btn_max.clicked.connect(self.btn_max_clicked)
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    ex = HomeScreen()
-    ex.show()
-    sys.exit(app.exec_())

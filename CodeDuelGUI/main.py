@@ -23,12 +23,13 @@ class Main():
         # Initialize variables
         self.conn = conn
         # Initialize GUI Forms
-        self.loginregister = LoginForm()
+        self.loginform = LoginForm()
         self.homescreen = HomeScreen()
         
     def start(self):
-        self.loginregister.show()
-        self.homescreen.show()
+        self.loginform.show()
+        if self.loginform.get_state():
+            self.homescreen.show()
         
     
 

@@ -92,7 +92,7 @@ class HomeScreen(QWidget):
         #profile page layout
         self.profile_page_layout = QVBoxLayout()
         self.profile_page_layout.setContentsMargins(0,0,0,0)
-    
+
     #initialize HomeScreen
     def initHomePage(self):
         ######################################
@@ -166,7 +166,6 @@ class HomeScreen(QWidget):
 
         self.friends_screen_widget = QWidget()
         self.main_objects_stacked_widget.addWidget(self.friends_screen_widget)
-
         self.friends_screen_widget.setLayout(self.friends_page_objects_layout)
         self.friends_page_objects_layout.addLayout(self.friendsmenu_layout , Qt.AlignTop)
 
@@ -190,7 +189,7 @@ class HomeScreen(QWidget):
         self.search_lineedit_widget = QWidget()
         self.friends_Stacked_widget.addWidget(self.search_lineedit_widget)
         self.search_lineedit_widget.setLayout(self.searchLayout)
-    
+
     def addWidgetsToLayout(self):
         ##########################################
         ##Layouts
@@ -393,19 +392,6 @@ class HomeScreen(QWidget):
         self.friends_btn.clicked.connect(self.friends_btn_clicked)
         self.friends_btn.setIconSize(QSize(20,20))
 
-        #main left menu settings Menu
-        self.settings_btn = QPushButton(self.main_left_menu_widget)
-        self.settings_btn.setStyleSheet("""QPushButton{
-            background-color:#595959;
-            border:none;
-            margin-top:2px;
-        }
-        QPushButton:hover{
-            border-bottom: 4px solid qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 rgb(0,191,255),stop:1 rgba(0, 0, 0, 0));
-        }""")
-        self.settings_btn.setGeometry(-2,180,105,50)
-        self.settings_btn.setIcon(QIcon("Buttons/settingsBtn.webp"))
-        self.settings_btn.clicked.connect(self.friends_btn_clicked)
 
     #home button clicked
     def home_button_clicked(self):
@@ -435,7 +421,7 @@ class HomeScreen(QWidget):
     #profile page go to main menu button (<-)
     def go_to_mainmenu_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(0)
-        self.all_left_menus_stacked_wiget.setCurrentIndex(0) 
+        self.all_left_menus_stacked_wiget.setCurrentIndex(0)
 
 #titlebar
 class TitleBar(QWidget):
@@ -535,7 +521,3 @@ class TitleBar(QWidget):
             self.btn_max.setText("☐")
             self.btn_max.clicked.connect(self.btn_max_clicked)
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    ex = HomeScreen()
-    app.exec_()

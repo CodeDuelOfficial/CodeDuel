@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import*
 from PyQt5.QtCore import*
 from PyQt5.QtGui import*
 import sys
-from homescreenn import MainWindow
+from homescreen import HomeScreen
 import syntax_pars
 
 class CodeWindow(QWidget):
@@ -19,7 +19,7 @@ class CodeWindow(QWidget):
         self.layout.addWidget(CodeScreenBar(self))
         self.sizegrip = QtWidgets.QSizeGrip(self)
         self.sizegrip.setStyleSheet("background-color:black")
-
+        
         #screen styles
         self.setStyleSheet("background-color:rgb(35,35,35)")
         self.layout.setContentsMargins(0,0,0,0)
@@ -27,40 +27,8 @@ class CodeWindow(QWidget):
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setMinimumSize(1080,700)
 
-        ############################################
-        ##Layouts
-        ############################################
-        self.mainLayout = QHBoxLayout()
-        self.mainLayout.setContentsMargins(5,0,5,0)
-
-
-        self.problemsLayout = QVBoxLayout()
-        self.problemsLayout.setContentsMargins(0,0,0,0)
-        self.mainLayout.addLayout(self.problemsLayout , Qt.AlignTop)
-
-        self.problem_btns_layout = QHBoxLayout()
-        self.problem_btns_layout.setContentsMargins(0,0,0,0)
-        self.problemsLayout.addLayout(self.problem_btns_layout , Qt.AlignTop)
-
-        self.problem_layout = QVBoxLayout()
-        self.problem_layout.setContentsMargins(0,0,0,0)
-
-        self.output_layout = QVBoxLayout()
-        self.output_layout.setContentsMargins(0,0,0,0)
-
-        self.status_Layout = QVBoxLayout()
-        self.status_Layout.setContentsMargins(0,0,0,0)
-
-        self.status_profile_photos_Layout = QHBoxLayout()
-        self.status_profile_photos_Layout.setContentsMargins(0,0,0,0)
-
-        self.status_names_Layout = QHBoxLayout()
-        self.status_names_Layout.setContentsMargins(0,0,0,0)
-
-        self.codescreenLayout = QVBoxLayout()
-        self.codescreenLayout.setContentsMargins(0,0,0,0)
-        self.mainLayout.addLayout(self.codescreenLayout , Qt.AlignTop)
-
+        
+        self.initLayout()
 
         #######################################################
         ##Stacked Widgets
@@ -126,7 +94,7 @@ class CodeWindow(QWidget):
         self.output_graphicsView.setAlignment(Qt.AlignTop)
         self.output_graphicsView.setStyleSheet("border:1px solid white;color:white;font-size:16px;padding-bottom:10px")
 
-        self.MainWindowClass = MainWindow()
+        self.MainWindowClass = HomeScreen()
         
         self.our_profile_photo_path = self.MainWindowClass.pp_path
 
@@ -216,6 +184,45 @@ class CodeWindow(QWidget):
         self.layout.addWidget(self.sizegrip,0,Qt.AlignBottom|Qt.AlignRight)
         self.setLayout(self.layout)
 
+    def initLayout(self):
+        ############################################
+        ##Layouts
+        ############################################
+        self.mainLayout = QHBoxLayout()
+        self.mainLayout.setContentsMargins(5,0,5,0)
+
+
+        self.problemsLayout = QVBoxLayout()
+        self.problemsLayout.setContentsMargins(0,0,0,0)
+        self.mainLayout.addLayout(self.problemsLayout , Qt.AlignTop)
+
+        self.problem_btns_layout = QHBoxLayout()
+        self.problem_btns_layout.setContentsMargins(0,0,0,0)
+        self.problemsLayout.addLayout(self.problem_btns_layout , Qt.AlignTop)
+
+        self.problem_layout = QVBoxLayout()
+        self.problem_layout.setContentsMargins(0,0,0,0)
+
+        self.output_layout = QVBoxLayout()
+        self.output_layout.setContentsMargins(0,0,0,0)
+
+        self.status_Layout = QVBoxLayout()
+        self.status_Layout.setContentsMargins(0,0,0,0)
+
+        self.status_profile_photos_Layout = QHBoxLayout()
+        self.status_profile_photos_Layout.setContentsMargins(0,0,0,0)
+
+        self.status_names_Layout = QHBoxLayout()
+        self.status_names_Layout.setContentsMargins(0,0,0,0)
+
+        self.codescreenLayout = QVBoxLayout()
+        self.codescreenLayout.setContentsMargins(0,0,0,0)
+        self.mainLayout.addLayout(self.codescreenLayout , Qt.AlignTop)    
+    
+    def initWidgets(self):
+        pass
+    def initCodeScreen(self):
+        pass
     ############################################
     ##Functions
     ############################################

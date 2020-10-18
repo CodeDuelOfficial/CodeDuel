@@ -29,7 +29,79 @@ class CodeWindow(QWidget):
 
         
         self.initLayout()
+        self.initWidgets()
+        self.initProblemScreen()
+        self.initCodePage()
 
+        
+
+        ###########################
+        ##Adding Widgets To CodeScreen
+        ###########################
+        self.problem_btns_layout.addWidget(self.problem_btn)
+        self.problem_btns_layout.addWidget(self.output_btn)
+        self.problem_btns_layout.addWidget(self.status_btn)
+        
+        self.problem_layout.addWidget(self.problem_graphicsView)
+        self.problemsLayout.addWidget(self.timeLabel , Qt.AlignTop)
+        self.problemsLayout.addWidget(self.endDuel_btn)
+
+        self.codescreenLayout.addWidget(self.codeScreen1)
+        self.codescreenLayout.addWidget(self.codePrewiew)
+
+        self.output_layout.addWidget(self.output_graphicsView)
+
+        self.status_Layout.addLayout(self.status_profile_photos_Layout)
+        self.status_Layout.addLayout(self.status_names_Layout)
+
+
+        self.status_profile_photos_Layout.addWidget(self.our_vs_photo)
+        self.status_profile_photos_Layout.addWidget(self.versus_Label)
+        self.status_profile_photos_Layout.addWidget(self.enemys_vs_photo)
+
+
+        self.layout.addLayout(self.mainLayout , Qt.AlignTop)
+        self.layout.addWidget(self.sizegrip,0,Qt.AlignBottom|Qt.AlignRight)
+        self.setLayout(self.layout)
+
+    #initialize Layout
+    def initLayout(self):
+        ############################################
+        ##Layouts
+        ############################################
+        self.mainLayout = QHBoxLayout()
+        self.mainLayout.setContentsMargins(5,0,5,0)
+
+
+        self.problemsLayout = QVBoxLayout()
+        self.problemsLayout.setContentsMargins(0,0,0,0)
+        self.mainLayout.addLayout(self.problemsLayout , Qt.AlignTop)
+
+        self.problem_btns_layout = QHBoxLayout()
+        self.problem_btns_layout.setContentsMargins(0,0,0,0)
+        self.problemsLayout.addLayout(self.problem_btns_layout , Qt.AlignTop)
+
+        self.problem_layout = QVBoxLayout()
+        self.problem_layout.setContentsMargins(0,0,0,0)
+
+        self.output_layout = QVBoxLayout()
+        self.output_layout.setContentsMargins(0,0,0,0)
+
+        self.status_Layout = QVBoxLayout()
+        self.status_Layout.setContentsMargins(0,0,0,0)
+
+        self.status_profile_photos_Layout = QHBoxLayout()
+        self.status_profile_photos_Layout.setContentsMargins(0,0,0,0)
+
+        self.status_names_Layout = QHBoxLayout()
+        self.status_names_Layout.setContentsMargins(0,0,0,0)
+
+        self.codescreenLayout = QVBoxLayout()
+        self.codescreenLayout.setContentsMargins(0,0,0,0)
+        self.mainLayout.addLayout(self.codescreenLayout , Qt.AlignTop)    
+
+    #initialize widgets    
+    def initWidgets(self):
         #######################################################
         ##Stacked Widgets
         #######################################################
@@ -47,7 +119,9 @@ class CodeWindow(QWidget):
         self.status_widget = QWidget()
         self.problems_stacked_widgets.addWidget(self.status_widget)
         self.status_widget.setLayout(self.status_Layout)
-
+    
+    #initialize Problems Screen
+    def initProblemScreen(self):
         ###########################################
         ##Problem Screen
         ###########################################
@@ -140,8 +214,10 @@ class CodeWindow(QWidget):
         }
         QPushButton:hover{
             border-bottom:4px solid rgb(0,191,255);
-        }""")     
+        }""")
 
+    #intialize Code Page
+    def initCodePage(self):
         ####################################################
         ##CodeScreen
         ####################################################
@@ -156,73 +232,6 @@ class CodeWindow(QWidget):
         self.codePrewiew.setStyleSheet("color:white;")
         self.highlighter = syntax_pars.PythonHighlighter(self.codePrewiew.document())
         self.codePrewiew.show()
-
-        #addWidgets
-        self.problem_btns_layout.addWidget(self.problem_btn)
-        self.problem_btns_layout.addWidget(self.output_btn)
-        self.problem_btns_layout.addWidget(self.status_btn)
-        
-        self.problem_layout.addWidget(self.problem_graphicsView)
-        self.problemsLayout.addWidget(self.timeLabel , Qt.AlignTop)
-        self.problemsLayout.addWidget(self.endDuel_btn)
-
-        self.codescreenLayout.addWidget(self.codeScreen1)
-        self.codescreenLayout.addWidget(self.codePrewiew)
-
-        self.output_layout.addWidget(self.output_graphicsView)
-
-        self.status_Layout.addLayout(self.status_profile_photos_Layout)
-        self.status_Layout.addLayout(self.status_names_Layout)
-
-
-        self.status_profile_photos_Layout.addWidget(self.our_vs_photo)
-        self.status_profile_photos_Layout.addWidget(self.versus_Label)
-        self.status_profile_photos_Layout.addWidget(self.enemys_vs_photo)
-
-
-        self.layout.addLayout(self.mainLayout , Qt.AlignTop)
-        self.layout.addWidget(self.sizegrip,0,Qt.AlignBottom|Qt.AlignRight)
-        self.setLayout(self.layout)
-
-    def initLayout(self):
-        ############################################
-        ##Layouts
-        ############################################
-        self.mainLayout = QHBoxLayout()
-        self.mainLayout.setContentsMargins(5,0,5,0)
-
-
-        self.problemsLayout = QVBoxLayout()
-        self.problemsLayout.setContentsMargins(0,0,0,0)
-        self.mainLayout.addLayout(self.problemsLayout , Qt.AlignTop)
-
-        self.problem_btns_layout = QHBoxLayout()
-        self.problem_btns_layout.setContentsMargins(0,0,0,0)
-        self.problemsLayout.addLayout(self.problem_btns_layout , Qt.AlignTop)
-
-        self.problem_layout = QVBoxLayout()
-        self.problem_layout.setContentsMargins(0,0,0,0)
-
-        self.output_layout = QVBoxLayout()
-        self.output_layout.setContentsMargins(0,0,0,0)
-
-        self.status_Layout = QVBoxLayout()
-        self.status_Layout.setContentsMargins(0,0,0,0)
-
-        self.status_profile_photos_Layout = QHBoxLayout()
-        self.status_profile_photos_Layout.setContentsMargins(0,0,0,0)
-
-        self.status_names_Layout = QHBoxLayout()
-        self.status_names_Layout.setContentsMargins(0,0,0,0)
-
-        self.codescreenLayout = QVBoxLayout()
-        self.codescreenLayout.setContentsMargins(0,0,0,0)
-        self.mainLayout.addLayout(self.codescreenLayout , Qt.AlignTop)    
-    
-    def initWidgets(self):
-        pass
-    def initCodeScreen(self):
-        pass
     ############################################
     ##Functions
     ############################################

@@ -148,7 +148,7 @@ class CodeWindow(QWidget):
         self.codeScreen1 = QPlainTextEdit()
         self.codeScreen1.setFixedHeight(500)
         self.codeScreen1.setStyleSheet("color:white;")
-        self.highlighter = syntax_pars.PythonHighlighter(self.codeScreen1.document())
+        self.highlight = syntax_pars.PythonHighlighter(self.codeScreen1.document())
         self.codeScreen1.show()
 
         self.codePrewiew = QPlainTextEdit()

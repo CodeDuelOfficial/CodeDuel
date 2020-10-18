@@ -37,6 +37,8 @@ class HomeScreen(QWidget):
         self.initFriendsPage()
         self.initProfilePage()
         self.addWidgetsToLayout()
+
+        self.show()
     
     @classmethod
     def bind(cls,name):
@@ -391,6 +393,20 @@ class HomeScreen(QWidget):
         self.friends_btn.clicked.connect(self.friends_btn_clicked)
         self.friends_btn.setIconSize(QSize(20,20))
 
+        #main left menu settings Menu
+        self.settings_btn = QPushButton(self.main_left_menu_widget)
+        self.settings_btn.setStyleSheet("""QPushButton{
+            background-color:#595959;
+            border:none;
+            margin-top:2px;
+        }
+        QPushButton:hover{
+            border-bottom: 4px solid qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 rgb(0,191,255),stop:1 rgba(0, 0, 0, 0));
+        }""")
+        self.settings_btn.setGeometry(-2,180,105,50)
+        self.settings_btn.setIcon(QIcon("Buttons/settingsBtn.webp"))
+        self.settings_btn.clicked.connect(self.friends_btn_clicked)
+
     #home button clicked
     def home_button_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(0)
@@ -519,3 +535,7 @@ class TitleBar(QWidget):
             self.btn_max.setText("☐")
             self.btn_max.clicked.connect(self.btn_max_clicked)
 
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    ex = HomeScreen()
+    app.exec_()

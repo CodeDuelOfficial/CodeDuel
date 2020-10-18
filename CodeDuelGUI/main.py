@@ -8,6 +8,7 @@ from homescreen import*
 from loginform import*
 from connection import*
 
+# LoginForm bindings
 @LoginForm.bind(name = "login")
 def login(email,password):
     values = {"email": email, "password": password}
@@ -17,6 +18,15 @@ def login(email,password):
 def register(username,email,password):
     values = {"username": username, "email": email, "password": password}
     return conn.send(bytes(json.dumps({"command": "register", "values": values}), 'utf-8'))
+
+# HomeScreen bindings
+@HomeScreen.bind(name = "add_friend")
+def add_friend(userquery):
+    pass
+
+@HomeScreen.bind(name = "search_friend")
+def search_friend(userquery):
+    pass
 
 class Main():
     def __init__(self, conn):
@@ -43,7 +53,7 @@ if __name__ == "__main__":
     
     conn = Connection().start() # Send Connecion request to the server
     next(conn) # start generator for yield assigment.
-    
     main = Main(conn)
     main.start()
+    
     sys.exit(app.exec_())

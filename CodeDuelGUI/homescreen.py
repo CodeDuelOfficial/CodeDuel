@@ -11,6 +11,7 @@ from PyQt5.QtGui import*
 import sys
 
 class HomeScreen(QWidget):
+    binds = {"add_friend": None, "search_friend": None} # binding names can change.
     def __init__(self):
         super(HomeScreen , self).__init__()
         self.mainLayout = QVBoxLayout() #apps main layout
@@ -36,7 +37,15 @@ class HomeScreen(QWidget):
         self.initFriendsPage()
         self.initProfilePage()
         self.addWidgetsToLayout()
+    
+    @classmethod
+    def bind(cls,name):
+        assert (name in cls.binds)
 
+        def getFunc(func):
+            cls.binds[name] = func
+        return getFunc 
+    
     #initialize Layouts
     def initLayout(self):
         #all objects layout

@@ -237,9 +237,7 @@ class HomeScreen(QWidget):
         self.profile_page_layout.addWidget(self.profile_name_label)
         self.profile_page_layout.addWidget(self.previous_matches)
 
-        #settings page
-        self.settings_page_layout.addWidget(self.main_settings_label)
-        
+        #settings page        
         self.settings_menu_layout.addWidget(self.settings_ghost_label)
 
         #sizegrip

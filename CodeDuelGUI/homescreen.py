@@ -36,6 +36,7 @@ class HomeScreen(QWidget):
         self.initHomePage()
         self.initFriendsPage()
         self.initProfilePage()
+        self.initSettingsPage()
         self.addWidgetsToLayout()
 
         self.show()
@@ -92,6 +93,16 @@ class HomeScreen(QWidget):
         #profile page layout
         self.profile_page_layout = QVBoxLayout()
         self.profile_page_layout.setContentsMargins(0,0,0,0)
+        #settings layout
+        self.settings_page_layout = QVBoxLayout()
+        self.settings_page_layout.setContentsMargins(0,0,0,0)
+        #profile settings layout
+        self.settings_profile_layout = QVBoxLayout()
+        self.settings_profile_layout.setContentsMargins(0,0,0,0)
+        #settings menu layout
+        self.settings_menu_layout = QHBoxLayout()
+        self.settings_menu_layout.setContentsMargins(0,0,0,0)
+        
 
     #initialize HomeScreen
     def initHomePage(self):
@@ -172,6 +183,12 @@ class HomeScreen(QWidget):
         self.profile_page_widget = QWidget()
         self.main_objects_stacked_widget.addWidget(self.profile_page_widget)
         self.profile_page_widget.setLayout(self.profile_page_layout)
+
+        self.settings_page_widget = QWidget()
+        self.main_objects_stacked_widget.addWidget(self.settings_page_widget)
+        self.settings_page_widget.setLayout(self.settings_page_layout)
+        
+        self.settings_page_layout.addLayout(self.settings_menu_layout , Qt.AlignTop)
         ################################################################################
         ##Friends Menu Widgets
         #################################################################################
@@ -189,7 +206,11 @@ class HomeScreen(QWidget):
         self.search_lineedit_widget = QWidget()
         self.friends_Stacked_widget.addWidget(self.search_lineedit_widget)
         self.search_lineedit_widget.setLayout(self.searchLayout)
-
+        #########################################################################
+        ##settings widgets
+        #########################################################################
+        self.settings_stacked_widget = QStackedWidget()
+        self.settings_page_layout.addWidget(self.settings_stacked_widget)
     def addWidgetsToLayout(self):
         ##########################################
         ##Layouts
@@ -215,6 +236,11 @@ class HomeScreen(QWidget):
         self.profile_page_layout.addWidget(self.profile_page_photo)
         self.profile_page_layout.addWidget(self.profile_name_label)
         self.profile_page_layout.addWidget(self.previous_matches)
+
+        #settings page
+        self.settings_page_layout.addWidget(self.main_settings_label)
+        
+        self.settings_menu_layout.addWidget(self.settings_ghost_label)
 
         #sizegrip
         self.mainLayout.addWidget(self.sizegrip,0,Qt.AlignBottom|Qt.AlignRight)
@@ -377,11 +403,11 @@ class HomeScreen(QWidget):
         self.home_button.setIconSize(QSize(20,20))
 
 
-        #main left menu friends button
-        self.friends_btn = QPushButton('' , self.main_left_menu_widget)
-        self.friends_btn.setIcon(QIcon("Buttons/yourFriends.png"))
-        self.friends_btn.setGeometry(-2,130,105,50)
-        self.friends_btn.setStyleSheet("""QPushButton{
+        #main left menu settings button
+        self.settings_btn = QPushButton('' , self.main_left_menu_widget)
+        self.settings_btn.setIcon(QIcon("Buttons/yourFriends.png"))
+        self.settings_btn.setGeometry(-2,130,105,50)
+        self.settings_btn.setStyleSheet("""QPushButton{
             background-color:#595959;
             border:none;
             margin-top:2px;
@@ -389,9 +415,32 @@ class HomeScreen(QWidget):
         QPushButton:hover{
             border-bottom: 4px solid qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 rgb(0,191,255),stop:1 rgba(0, 0, 0, 0));
         }""")
-        self.friends_btn.clicked.connect(self.friends_btn_clicked)
-        self.friends_btn.setIconSize(QSize(20,20))
+        self.settings_btn.clicked.connect(self.friends_btn_clicked)
+        self.settings_btn.setIconSize(QSize(20,20))
 
+        self.settings_btn = QPushButton('' , self.main_left_menu_widget)
+        self.settings_btn.setIcon(QIcon('Buttons/settingsBtn.png'))
+        self.settings_btn.setGeometry(-2,180,105,50)
+        self.settings_btn.setStyleSheet("""QPushButton{
+            background-color:#595959;
+            border:none;
+            margin-top:2px;
+        }
+        QPushButton:hover{
+            border-bottom: 4px solid qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 rgb(0,191,255),stop:1 rgba(0, 0, 0, 0));
+        }""")
+        self.settings_btn.clicked.connect(self.settings_btn_clicked)
+        self.settings_btn.setIconSize(QSize(20,20))
+
+    def initSettingsPage(self):
+        #ghostLabel
+        self.settings_ghost_label = QLabel()
+        self.settings_ghost_label.setStyleSheet("""QLabel{
+            background-color:#8C8C8C;
+            margin-right:5px;
+        }""")
+        self.settings_ghost_label.setAlignment(Qt.AlignCenter)
+        self.settings_ghost_label.setFixedHeight(30)
 
     #home button clicked
     def home_button_clicked(self):
@@ -422,7 +471,12 @@ class HomeScreen(QWidget):
     def go_to_mainmenu_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(0)
         self.all_left_menus_stacked_wiget.setCurrentIndex(0)
+    
+    #settings btn clicked
+    def settings_btn_clicked(self):
+        self.main_objects_stacked_widget.setCurrentIndex(3)
 
+    
 #titlebar
 class TitleBar(QWidget):
     def __init__(self, parent):
@@ -521,3 +575,8 @@ class TitleBar(QWidget):
             self.btn_max.setText("☐")
             self.btn_max.clicked.connect(self.btn_max_clicked)
 
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    ex = HomeScreen()
+    ex.show()
+    app.exec_()

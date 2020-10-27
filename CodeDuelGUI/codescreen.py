@@ -9,7 +9,6 @@ from PyQt5.QtWidgets import*
 from PyQt5.QtCore import*
 from PyQt5.QtGui import*
 import sys
-from homescreen import HomeScreen
 import syntax_pars
 
 class CodeWindow(QWidget):
@@ -168,9 +167,8 @@ class CodeWindow(QWidget):
         self.output_graphicsView.setAlignment(Qt.AlignTop)
         self.output_graphicsView.setStyleSheet("border:1px solid white;color:white;font-size:16px;padding-bottom:10px")
 
-        self.MainWindowClass = HomeScreen()
         
-        self.our_profile_photo_path = self.MainWindowClass.pp_path
+        self.our_profile_photo_path = None
 
         self.our_profile_photo = QPixmap(self.our_profile_photo_path)
 

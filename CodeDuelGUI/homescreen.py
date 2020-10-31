@@ -1,6 +1,6 @@
 #
 #
-###Updated By Venoox 08.10.2020
+###Updated By Emircan Demirci 31.10.2020
 #
 #
 import PyQt5

@@ -30,6 +30,7 @@ class HomeScreen(QWidget):
         self.setMinimumSize(1080,700)
         self.setLayout(self.mainLayout)
         
+        self.pp_path = "Buttons/warning.png"
 
         self.initStackedWidgets()
         self.initMainLeftMenu()
@@ -97,8 +98,8 @@ class HomeScreen(QWidget):
         self.settings_page_layout = QVBoxLayout()
         self.settings_page_layout.setContentsMargins(0,0,0,0)
         #profile settings layout
-        self.settings_profile_layout = QVBoxLayout()
-        self.settings_profile_layout.setContentsMargins(0,0,0,0)
+        self.profile_settings_layout = QVBoxLayout()
+        self.profile_settings_layout.setContentsMargins(0,0,0,0)
         #settings menu layout
         self.settings_menu_layout = QHBoxLayout()
         self.settings_menu_layout.setContentsMargins(0,0,0,0)
@@ -211,6 +212,10 @@ class HomeScreen(QWidget):
         #########################################################################
         self.settings_stacked_widget = QStackedWidget()
         self.settings_page_layout.addWidget(self.settings_stacked_widget)
+
+        self.profile_settings_page = QWidget()
+        self.settings_stacked_widget.addWidget(self.profile_settings_page)
+        self.profile_settings_page.setLayout(self.profile_settings_layout)
     def addWidgetsToLayout(self):
         ##########################################
         ##Layouts
@@ -234,11 +239,18 @@ class HomeScreen(QWidget):
 
         #profile page
         self.profile_page_layout.addWidget(self.profile_page_photo)
-        self.profile_page_layout.addWidget(self.profile_name_label)
+        self.profile_page_layout.addWidget(self.profile_username)
         self.profile_page_layout.addWidget(self.previous_matches)
 
         #settings page        
+        self.settings_menu_layout.addWidget(self.profile_settings_btn , Qt.AlignCenter)
         self.settings_menu_layout.addWidget(self.settings_ghost_label)
+
+        #profile settings page
+        self.profile_settings_layout.addWidget(self.profile_settings_photo)
+        self.profile_settings_layout.addWidget(self.settings_username)
+        self.profile_settings_layout.addWidget(self.user_email)
+        self.profile_settings_layout.addWidget(self.edit_profile_btn , alignment = Qt.AlignTop)
 
         #sizegrip
         self.mainLayout.addWidget(self.sizegrip,0,Qt.AlignBottom|Qt.AlignRight)
@@ -333,9 +345,9 @@ class HomeScreen(QWidget):
         }""")
         self.previous_matches.setAlignment(Qt.AlignHCenter)
 
-        self.profile_name_label = QLabel("Username")
-        self.profile_name_label.setAlignment(Qt.AlignHCenter)
-        self.profile_name_label.setStyleSheet("""QLabel{
+        self.profile_username = QLabel("Username")
+        self.profile_username.setAlignment(Qt.AlignHCenter)
+        self.profile_username.setStyleSheet("""QLabel{
             color:#F2F2EB;
             margin-top:10px;
             font-size:32px;
@@ -345,6 +357,7 @@ class HomeScreen(QWidget):
         
         self.profile_page_photo = QLabel()
         self.profile_page_photo.setAlignment(Qt.AlignCenter) 
+        self.profile_page_photo.setPixmap(self.profile_photo_pixmap)
         self.profile_page_photo.setFixedHeight(300)
         self.profile_page_photo.setStyleSheet("""QLabel{
             margin:300px;
@@ -372,10 +385,6 @@ class HomeScreen(QWidget):
         self.ghostLabel = QLabel(self.main_left_menu_widget)
         self.ghostLabel.resize(100,16770)
         self.ghostLabel.setStyleSheet("background-color:#141414;")
-        
-        self.pp_path = None
-
-
 
         self.profile_photo = QPushButton(self.main_left_menu_widget)
         self.profile_photo.setIcon(QIcon(self.pp_path))
@@ -440,6 +449,58 @@ class HomeScreen(QWidget):
         self.settings_ghost_label.setAlignment(Qt.AlignCenter)
         self.settings_ghost_label.setFixedHeight(30)
 
+        #profile settings button
+        self.profile_settings_btn = QPushButton("Profile")
+        self.profile_settings_btn.setStyleSheet("""QPushButton{
+            background-color:#8C8C8C;
+            border:none;
+        }
+        QPushButton:hover{
+            border-bottom: 4px solid #5c5c5c;
+        }""")
+        self.profile_settings_btn.setFixedHeight(30)
+        self.profile_settings_btn.setFixedWidth(90)
+        self.profile_settings_btn.clicked.connect(self.profile_settings_btn_clicked)
+
+        self.user_email = QLabel("Email")
+        self.user_email.setAlignment(Qt.AlignHCenter)
+        self.user_email.setStyleSheet("""QLabel{
+            color:#F2F2EB;
+            font-size:32px;
+            margin-bottom:180px;
+        }""")
+
+        #username
+        self.settings_username = QLabel("Username")
+        self.settings_username.setAlignment(Qt.AlignHCenter)
+        self.settings_username.setStyleSheet("""QLabel{
+            color:#F2F2EB;
+            margin-top:10px;
+            font-size:32px;
+        }""")
+
+        #profile photo
+        self.profile_settings_photo = QLabel()
+        self.profile_settings_photo.setAlignment(Qt.AlignCenter) 
+        self.profile_settings_photo.setPixmap(self.profile_photo_pixmap)
+        self.profile_settings_photo.setStyleSheet("""QLabel{
+            border:none;
+        }""")
+
+        #edit profile button 
+        self.edit_profile_btn = QPushButton("Edit Profile")
+        self.edit_profile_btn.setStyleSheet("""QPushButton{
+            background-color:#8C8C8C;
+            border:none;
+            margin-left:300px;
+            margin-right:300px;
+        }
+        QPushButton:hover{
+            border-bottom: 4px solid rgb(0,191,255);
+        }""")
+        self.edit_profile_btn.setFixedHeight(30)
+
+
     #home button clicked
     def home_button_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(0)
@@ -473,6 +534,9 @@ class HomeScreen(QWidget):
     #settings btn clicked
     def settings_btn_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(3)
+
+    def profile_settings_btn_clicked(self):
+        self.settings_stacked_widget.setCurrentIndex(0)
 
     
 #titlebar

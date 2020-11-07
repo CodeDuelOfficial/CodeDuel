@@ -1,5 +1,5 @@
 #
-###Updated by Venoox 08.10.2020
+###Updated by Emircan Demirci08.10.2020
 #
 from PyQt5.QtWidgets import (QMessageBox,QApplication, QMainWindow, QToolTip, QPushButton,
                              QDesktopWidget, QMainWindow, QAction, qApp, QToolBar, QVBoxLayout,

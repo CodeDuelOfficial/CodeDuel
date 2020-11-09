@@ -25,7 +25,6 @@ class HomeScreen(QWidget):
         self.setStyleSheet("background-color:#262626;")
         self.mainLayout.setContentsMargins(0,0,0,0)
         self.sizegrip = QtWidgets.QSizeGrip(self)
-        self.sizegrip.setStyleSheet("background-color:black;")
         self.setWindowFlags(Qt.FramelessWindowHint |  QtCore.Qt.WindowStaysOnTopHint)
         self.setMinimumSize(1080,700)
         self.setLayout(self.mainLayout)
@@ -97,12 +96,59 @@ class HomeScreen(QWidget):
         #settings layout
         self.settings_page_layout = QVBoxLayout()
         self.settings_page_layout.setContentsMargins(0,0,0,0)
+        #settings profile scroll layout
+        self.profile_settings_scroll = QScrollArea()
+        self.profile_settings_scroll.setWidgetResizable(True)
+        self.profile_settings_scroll.setStyleSheet("""QScrollArea
+        {
+            border:none;
+            margin-right:5px;
+        }""")
+        self.profile_settings_scroll.verticalScrollBar().setStyleSheet(""" QScrollBar:vertical{
+        border: 2px solid grey;
+        background: #262626;
+        border-radius: 4px;
+        }
+        QScrollBar QWidget{
+            background-color:transparent;
+        }
+        QScrollBar::handle:vertical
+        {
+            background-color:#141414;         /* #605F5F; */
+            min-height: 5px;
+            border-radius: 4px;
+            width:50px;
+        }
+        
+        QScrollBar::add-line:vertical
+        {
+            margin: 0px 3px 0px 3px;
+            width: 10px;
+            height: 10px;
+            subcontrol-position: right;
+            subcontrol-origin: margin;
+            background:none;
+            color:none;
+        }
+
+        QScrollBar::sub-line:vertical
+        {
+            margin: 0px 3px 0px 3px;
+            height: 10px;
+            width: 10px;
+            subcontrol-position: left;
+            subcontrol-origin: margin;
+            background:none;
+            color:none;}""")
         #profile settings layout
         self.profile_settings_layout = QVBoxLayout()
         self.profile_settings_layout.setContentsMargins(0,0,0,0)
         #settings menu layout
         self.settings_menu_layout = QHBoxLayout()
         self.settings_menu_layout.setContentsMargins(0,0,0,0)
+        #edit profile layout
+        self.edit_profile_layout = QVBoxLayout()
+        self.edit_profile_layout.setContentsMargins(0,0,0,0)
         
 
     #initialize HomeScreen
@@ -214,8 +260,13 @@ class HomeScreen(QWidget):
         self.settings_page_layout.addWidget(self.settings_stacked_widget)
 
         self.profile_settings_page = QWidget()
-        self.settings_stacked_widget.addWidget(self.profile_settings_page)
         self.profile_settings_page.setLayout(self.profile_settings_layout)
+        self.profile_settings_scroll.setWidget(self.profile_settings_page)
+
+        self.settings_stacked_widget.addWidget(self.profile_settings_scroll)
+
+        self.edit_profile_page = QWidget()
+        self.settings_stacked_widget.addWidget(self.edit_profile_page)
     def addWidgetsToLayout(self):
         ##########################################
         ##Layouts
@@ -251,6 +302,9 @@ class HomeScreen(QWidget):
         self.profile_settings_layout.addWidget(self.settings_username)
         self.profile_settings_layout.addWidget(self.user_email)
         self.profile_settings_layout.addWidget(self.edit_profile_btn , alignment = Qt.AlignTop)
+        self.profile_settings_layout.addWidget(self.change_password_label)
+        self.profile_settings_layout.addWidget(self.change_password)
+        
 
         #sizegrip
         self.mainLayout.addWidget(self.sizegrip,0,Qt.AlignBottom|Qt.AlignRight)
@@ -467,7 +521,6 @@ class HomeScreen(QWidget):
         self.user_email.setStyleSheet("""QLabel{
             color:#F2F2EB;
             font-size:32px;
-            margin-bottom:180px;
         }""")
 
         #username
@@ -499,8 +552,30 @@ class HomeScreen(QWidget):
             border-bottom: 4px solid rgb(0,191,255);
         }""")
         self.edit_profile_btn.setFixedHeight(30)
+        self.edit_profile_btn.clicked.connect(self.edit_profile_btn_clicked)
 
+        #change password title
+        self.change_password_label = QLabel("<h1><strong>Password</strong></h1>")
 
+        #change password
+        self.change_password= QPushButton("Change Password")
+        self.change_password.setStyleSheet("""QPushButton{
+            background-color:#8C8C8C;
+            border:none;
+            margin-right:500px;
+        }
+        QPushButton:hover{
+            border-bottom: 4px solid rgb(0,191,255);
+        }""")
+        self.change_password.setFixedHeight(30)
+        self.change_password.clicked.connect(self.change_password_btn_clicked)
+
+    #edit profile button clicked
+    def edit_profile_btn_clicked(self):
+        pass
+    #change password
+    def change_password_btn_clicked(self):
+        pass
     #home button clicked
     def home_button_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(0)
@@ -537,6 +612,9 @@ class HomeScreen(QWidget):
 
     def profile_settings_btn_clicked(self):
         self.settings_stacked_widget.setCurrentIndex(0)
+
+    #animations
+
 
     
 #titlebar

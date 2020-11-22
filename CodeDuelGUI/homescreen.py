@@ -304,6 +304,7 @@ class HomeScreen(QWidget):
         self.profile_settings_layout.addWidget(self.edit_profile_btn , alignment = Qt.AlignTop)
         self.profile_settings_layout.addWidget(self.change_password_label)
         self.profile_settings_layout.addWidget(self.change_password)
+        self.profile_settings_layout.addWidget(self.demoLabel)
         
 
         #sizegrip
@@ -555,7 +556,8 @@ class HomeScreen(QWidget):
         self.edit_profile_btn.clicked.connect(self.edit_profile_btn_clicked)
 
         #change password title
-        self.change_password_label = QLabel("<h1><strong>Password</strong></h1>")
+        self.change_password_label = QLabel("<h1><strong><font style='color:#bfbfbf'>Password</font></strong></h1>")
+        self.change_password_label.setStyleSheet("margin-top:50px;")
 
         #change password
         self.change_password= QPushButton("Change Password")
@@ -563,6 +565,7 @@ class HomeScreen(QWidget):
             background-color:#8C8C8C;
             border:none;
             margin-right:500px;
+            margin-left:50px
         }
         QPushButton:hover{
             border-bottom: 4px solid rgb(0,191,255);
@@ -571,8 +574,14 @@ class HomeScreen(QWidget):
         self.change_password.clicked.connect(self.change_password_btn_clicked)
 
     #edit profile button clicked
-    def edit_profile_btn_clicked(self):
-        pass
+    def edit_profile_btn_clicked(self , scroll):
+        self.profile_settings_page.hide()
+        
+        QTimer.singleShot(300 , self.initEditProfile)
+
+    def initEditProfile(self):
+        self.demoLabel = QLabel("Trial")
+        self.demoLabel.setAlignment(Qt.AlignCenter)
     #change password
     def change_password_btn_clicked(self):
         pass

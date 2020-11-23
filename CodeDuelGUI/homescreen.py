@@ -37,6 +37,7 @@ class HomeScreen(QWidget):
         self.initFriendsPage()
         self.initProfilePage()
         self.initSettingsPage()
+        self.initEditProfile()
         self.addWidgetsToLayout()
 
         self.show()
@@ -149,7 +150,6 @@ class HomeScreen(QWidget):
         #edit profile layout
         self.edit_profile_layout = QVBoxLayout()
         self.edit_profile_layout.setContentsMargins(0,0,0,0)
-        
 
     #initialize HomeScreen
     def initHomePage(self):
@@ -266,6 +266,7 @@ class HomeScreen(QWidget):
         self.settings_stacked_widget.addWidget(self.profile_settings_scroll)
 
         self.edit_profile_page = QWidget()
+        self.edit_profile_page.setLayout(self.edit_profile_layout)
         self.settings_stacked_widget.addWidget(self.edit_profile_page)
     def addWidgetsToLayout(self):
         ##########################################
@@ -304,8 +305,11 @@ class HomeScreen(QWidget):
         self.profile_settings_layout.addWidget(self.edit_profile_btn , alignment = Qt.AlignTop)
         self.profile_settings_layout.addWidget(self.change_password_label)
         self.profile_settings_layout.addWidget(self.change_password)
-        self.profile_settings_layout.addWidget(self.demoLabel)
         
+        #edit profile button clicked
+        self.edit_profile_layout.addWidget(self.edit_profile_pp)
+        self.edit_profile_layout.addWidget(self.edit_username)
+        self.edit_profile_layout.addWidget(self.edit_email)
 
         #sizegrip
         self.mainLayout.addWidget(self.sizegrip,0,Qt.AlignBottom|Qt.AlignRight)
@@ -575,13 +579,43 @@ class HomeScreen(QWidget):
 
     #edit profile button clicked
     def edit_profile_btn_clicked(self , scroll):
-        self.profile_settings_page.hide()
+        self.profile_settings_scroll.hide()
         
-        QTimer.singleShot(300 , self.initEditProfile)
+        QTimer.singleShot(400 , self.initEditProfile)
 
     def initEditProfile(self):
-        self.demoLabel = QLabel("Trial")
-        self.demoLabel.setAlignment(Qt.AlignCenter)
+        self.edit_profile_pp = QLabel()
+        self.edit_profile_pp.setAlignment(Qt.AlignCenter) 
+        self.edit_profile_pp.setPixmap(self.profile_photo_pixmap)
+        self.edit_profile_pp.setStyleSheet("""QLabel{
+            border:none;
+        }""")
+
+        self.edit_username = QPlainTextEdit()
+        self.edit_username.setStyleSheet("""QPlainTextEdit{
+            border: 3px solid dimgray;
+            border-style:outset;border-width:2px;
+            border-radius:10px;
+            color:silver;
+            margin-left:300px;
+            margin-right:300px;
+        }""")
+        self.edit_username.setFixedHeight(40)
+
+        self.edit_email = QPlainTextEdit()
+        self.edit_email.setStyleSheet("""QPlainTextEdit{
+            border: 3px solid dimgray;
+            border-style:outset;
+            border-width:2px;
+            border-radius:10px;
+            color:silver;
+            margin-left:300px;
+            margin-right:300px;
+            font-size:20px;
+        }""")
+        self.edit_email.setFixedHeight(40)
+
+        self.settings_stacked_widget.setCurrentIndex(1)
     #change password
     def change_password_btn_clicked(self):
         pass
@@ -618,6 +652,7 @@ class HomeScreen(QWidget):
     #settings btn clicked
     def settings_btn_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(3)
+        self.settings_stacked_widget.setCurrentIndex(0)
 
     def profile_settings_btn_clicked(self):
         self.settings_stacked_widget.setCurrentIndex(0)

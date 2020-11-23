@@ -599,7 +599,9 @@ class HomeScreen(QWidget):
             color:silver;
             margin-left:300px;
             margin-right:300px;
+            font-size:20px;
         }""")
+        self.edit_username.setPlainText("Username")
         self.edit_username.setFixedHeight(40)
 
         self.edit_email = QPlainTextEdit()
@@ -613,6 +615,7 @@ class HomeScreen(QWidget):
             margin-right:300px;
             font-size:20px;
         }""")
+        self.edit_email.setPlainText("Email")
         self.edit_email.setFixedHeight(40)
 
         self.settings_stacked_widget.setCurrentIndex(1)

@@ -1,6 +1,6 @@
 #
 #
-###Updated By Emircan Demirci 24.11.2020
+###Updated By Emircan Demirci 2.12.2020
 #
 #
 import PyQt5
@@ -9,6 +9,53 @@ from PyQt5.QtWidgets import*
 from PyQt5.QtCore import*
 from PyQt5.QtGui import*
 import sys
+
+def mask_image(imgdata, imgtype='jpg', size=256):
+    """Return a ``QPixmap`` from *imgdata* masked with a smooth circle.
+
+    *imgdata* are the raw image bytes, *imgtype* denotes the image type.
+
+    The returned image will have a size of *size* × *size* pixels.
+
+    """
+    # Load image and convert to 32-bit ARGB (adds an alpha channel):
+    image = QImage.fromData(imgdata, imgtype)
+    image.convertToFormat(QImage.Format_ARGB32)
+
+    # Crop image to a square:
+    imgsize = min(image.width(), image.height())
+    rect = QRect(
+        (image.width() - imgsize) / 2,
+        (image.height() - imgsize) / 2,
+        imgsize,
+        imgsize,
+    )
+    image = image.copy(rect)
+
+    # Create the output image with the same dimensions and an alpha channel
+    # and make it completely transparent:
+    out_img = QImage(imgsize, imgsize, QImage.Format_ARGB32)
+    out_img.fill(Qt.transparent)
+
+    # Create a texture brush and paint a circle with the original image onto
+    # the output image:
+    brush = QBrush(image)        # Create texture brush
+    painter = QPainter(out_img)  # Paint the output image
+    painter.setBrush(brush)      # Use the image texture brush
+    painter.setPen(Qt.NoPen)     # Don't draw an outline
+    painter.setRenderHint(QPainter.Antialiasing, True)  # Use AA
+    painter.drawEllipse(0, 0, imgsize, imgsize)  # Actually draw the circle
+    painter.end()                # We are done (segfault if you forget this)
+
+    # Convert the image to a pixmap and rescale it.  Take pixel ratio into
+    # account to get a sharp image on retina displays:
+    pr = QWindow().devicePixelRatio()
+    pm = QPixmap.fromImage(out_img)
+    pm.setDevicePixelRatio(pr)
+    size *= pr
+    pm = pm.scaled(size, size, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+
+    return pm
 
 class HomeScreen(QWidget):
     binds = {"add_friend": None, "search_friend": None} # binding names can change.
@@ -29,7 +76,7 @@ class HomeScreen(QWidget):
         self.setMinimumSize(1080,700)
         self.setLayout(self.mainLayout)
         
-        self.pp_path = "Buttons/warning.png"
+        self.pp_path = "Buttons/unnamed.gif"
 
         self.initStackedWidgets()
         self.initMainLeftMenu()
@@ -150,7 +197,53 @@ class HomeScreen(QWidget):
         #edit profile layout
         self.edit_profile_layout = QVBoxLayout()
         self.edit_profile_layout.setContentsMargins(0,0,0,0)
+        #edit profile scroll bar
+        self.edit_profile_scroll = QScrollArea()
+        self.edit_profile_scroll.setWidgetResizable(True)
+        self.edit_profile_scroll.setStyleSheet("""QScrollArea
+        {
+            border:none;
+            margin-right:5px;
+        }""")
+        self.edit_profile_scroll.verticalScrollBar().setStyleSheet(""" QScrollBar:vertical{
+        border: 2px solid grey;
+        background: #262626;
+        border-radius: 4px;
+        }
+        QScrollBar QWidget{
+            background-color:transparent;
+        }
+        QScrollBar::handle:vertical
+        {
+            background-color:#141414;         /* #605F5F; */
+            min-height: 5px;
+            border-radius: 4px;
+            width:50px;
+        }
+        
+        QScrollBar::add-line:vertical
+        {
+            margin: 0px 3px 0px 3px;
+            width: 10px;
+            height: 10px;
+            subcontrol-position: right;
+            subcontrol-origin: margin;
+            background:none;
+            color:none;
+        }
 
+        QScrollBar::sub-line:vertical
+        {
+            margin: 0px 3px 0px 3px;
+            height: 10px;
+            width: 10px;
+            subcontrol-position: left;
+            subcontrol-origin: margin;
+            background:none;
+            color:none;}""")
+        #edit profile buttons layout
+        self.edit_buttons_layout = QHBoxLayout()
+        self.edit_buttons_layout.setContentsMargins(0,0,0,0)
     #initialize HomeScreen
     def initHomePage(self):
         ######################################
@@ -267,7 +360,11 @@ class HomeScreen(QWidget):
 
         self.edit_profile_page = QWidget()
         self.edit_profile_page.setLayout(self.edit_profile_layout)
-        self.settings_stacked_widget.addWidget(self.edit_profile_page)
+        self.edit_profile_scroll.setWidget(self.edit_profile_page)
+        self.settings_stacked_widget.addWidget(self.edit_profile_scroll)
+
+        
+
     def addWidgetsToLayout(self):
         ##########################################
         ##Layouts
@@ -299,6 +396,7 @@ class HomeScreen(QWidget):
         self.settings_menu_layout.addWidget(self.settings_ghost_label)
 
         #profile settings page
+        self.profile_settings_layout.addWidget(self.profile_settings_label)
         self.profile_settings_layout.addWidget(self.profile_settings_photo)
         self.profile_settings_layout.addWidget(self.settings_username)
         self.profile_settings_layout.addWidget(self.user_email)
@@ -310,6 +408,9 @@ class HomeScreen(QWidget):
         self.edit_profile_layout.addWidget(self.edit_profile_pp)
         self.edit_profile_layout.addWidget(self.edit_username)
         self.edit_profile_layout.addWidget(self.edit_email)
+        self.edit_profile_layout.addLayout(self.edit_buttons_layout) 
+        self.edit_buttons_layout.addWidget(self.save_changes_btn)
+        self.edit_buttons_layout.addWidget(self.cancel_btn)
 
         #sizegrip
         self.mainLayout.addWidget(self.sizegrip,0,Qt.AlignBottom|Qt.AlignRight)
@@ -412,8 +513,9 @@ class HomeScreen(QWidget):
             font-size:32px;
         }""")
         
-        self.profile_photo_pixmap = QPixmap(self.pp_path)
-        
+        self.profile_photo_data = open(self.pp_path, 'rb').read()
+        self.profile_photo_pixmap = mask_image(self.profile_photo_data)
+
         self.profile_page_photo = QLabel()
         self.profile_page_photo.setAlignment(Qt.AlignCenter) 
         self.profile_page_photo.setPixmap(self.profile_photo_pixmap)
@@ -435,6 +537,8 @@ class HomeScreen(QWidget):
             border-bottom:4px solid rgb(0,191,255);
         }""")
         self.go_to_mainmenu.clicked.connect(self.go_to_mainmenu_clicked)
+    
+    
     
     #initialize Main Page Left Menu
     def initMainLeftMenu(self):
@@ -498,7 +602,10 @@ class HomeScreen(QWidget):
         self.settings_btn.clicked.connect(self.settings_btn_clicked)
         self.settings_btn.setIconSize(QSize(20,20))
 
-    def initSettingsPage(self):
+    def initSettingsPage(self):     
+        #profile settings title
+        self.profile_settings_label = QLabel("<h1><strong><font style='color:#bfbfbf'>Profile</font></strong></h1>")
+
         #ghostLabel
         self.settings_ghost_label = QLabel()
         self.settings_ghost_label.setStyleSheet("""QLabel{
@@ -541,6 +648,7 @@ class HomeScreen(QWidget):
         self.profile_settings_photo = QLabel()
         self.profile_settings_photo.setAlignment(Qt.AlignCenter) 
         self.profile_settings_photo.setPixmap(self.profile_photo_pixmap)
+        self.profile_settings_photo.setFixedHeight(300)
         self.profile_settings_photo.setStyleSheet("""QLabel{
             border:none;
         }""")
@@ -577,16 +685,11 @@ class HomeScreen(QWidget):
         self.change_password.setFixedHeight(30)
         self.change_password.clicked.connect(self.change_password_btn_clicked)
 
-    #edit profile button clicked
-    def edit_profile_btn_clicked(self , scroll):
-        self.profile_settings_scroll.hide()
-        
-        QTimer.singleShot(400 , self.initEditProfile)
-
     def initEditProfile(self):
         self.edit_profile_pp = QLabel()
         self.edit_profile_pp.setAlignment(Qt.AlignCenter) 
         self.edit_profile_pp.setPixmap(self.profile_photo_pixmap)
+        self.edit_profile_pp.setFixedHeight(300)
         self.edit_profile_pp.setStyleSheet("""QLabel{
             border:none;
         }""")
@@ -619,6 +722,41 @@ class HomeScreen(QWidget):
         self.edit_email.setFixedHeight(40)
 
         self.settings_stacked_widget.setCurrentIndex(1)
+
+        self.save_changes_btn = QPushButton("Save Changes")
+        self.save_changes_btn.setFixedHeight(35)
+        self.save_changes_btn.setStyleSheet("""QPushButton{
+            background-color:#8C8C8C;
+            border:none;
+        }
+        QPushButton:hover{
+            border-bottom: 4px solid rgb(0,191,255);
+        }""")
+
+        self.cancel_btn = QPushButton("Cancel")
+        self.cancel_btn.setFixedHeight(35)
+        self.cancel_btn.setStyleSheet("""QPushButton{
+            background-color:#8C8C8C;
+            border:none;
+        }
+        QPushButton:hover{
+            border-bottom: 4px solid rgb(0,191,255);
+        }""")
+        self.cancel_btn.clicked.connect(self.cancel_btn_animation)
+
+    #edit profile button clicked
+    def edit_profile_btn_clicked(self , scroll):
+        self.profile_settings_scroll.hide()
+        
+        QTimer.singleShot(400 , self.initEditProfile)
+
+    #cancel btn clicked
+    def cancel_btn_animation(self):
+        self.edit_profile_scroll.hide()
+        QTimer.singleShot(400 , self.edit_cancelbtn_clicked)
+
+    def edit_cancelbtn_clicked(self):
+        self.settings_stacked_widget.setCurrentIndex(0)
     #change password
     def change_password_btn_clicked(self):
         pass
@@ -659,8 +797,6 @@ class HomeScreen(QWidget):
 
     def profile_settings_btn_clicked(self):
         self.settings_stacked_widget.setCurrentIndex(0)
-
-    #animations
 
 
     

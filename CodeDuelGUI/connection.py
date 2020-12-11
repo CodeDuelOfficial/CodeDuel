@@ -15,10 +15,10 @@ class Connection:
 		self.state = True
 		# Constant variables
 		self.HEADER = 128
-	def send(self, data):
+	def _send(self, data):
 		self.conn.send(data)
 
-	def recv(self, buffer):
+	def _recv(self, buffer):
 		return self.conn.recv(buffer)
 
 	def start(self):
@@ -27,8 +27,8 @@ class Connection:
 			
 				send_data = yield  # Get data from outside of function
 				try:
-					self.send(send_data) # Short-cut for self.conn.send
-					yield self.recv(self.HEADER)
+					self._send(send_data) # Short-cut for self.conn.send
+					yield self._recv(self.HEADER)
 				except socket.error:
 
 					connected = False

@@ -16,7 +16,7 @@ class Connection:
 		# Constant variables
 		self.HEADER = 128
 	def _send(self, data):
-		self.conn.send(data)
+		self.conn.sendall(data)
 
 	def _recv(self, buffer):
 		return self.conn.recv(buffer)

@@ -10,7 +10,107 @@ from PyQt5.QtCore import*
 from PyQt5.QtGui import*
 import sys
 import syntax_pars
+class QLineNumberArea(QWidget):
+    def __init__(self, editor):
+        super().__init__(editor)
+        self.codeEditor = editor
 
+    def sizeHint(self):
+
+        return QSize(self.codeEditor.lineNumberAreaWidth(), 0)
+
+    def paintEvent(self, event):
+
+        self.codeEditor.lineNumberAreaPaintEvent(event)
+
+class QCodeEdit(QtWidgets.QPlainTextEdit):
+    def __init__(self,patern=None):
+        super().__init__(patern)
+        self.lineNumberArea = QLineNumberArea(self)
+        self.blockCountChanged.connect(self.updateLineNumberAreaWidth)
+        self.updateRequest.connect(self.updateLineNumberArea)
+        self.updateLineNumberAreaWidth(0)
+
+    def keyPressEvent(self, event):
+        QtWidgets.QPlainTextEdit.keyPressEvent(self, event)
+
+    def focusInEvent(self, event):
+
+        QtWidgets.QPlainTextEdit.focusInEvent(self, event)
+
+    def lineNumberAreaWidth(self):
+        digits = 1
+        max_value = self.blockCount()
+        while max_value >= 10:
+
+            max_value /= 10
+            digits += 1
+
+        width = 3 + self.fontMetrics().width('9') * digits
+
+        return width
+    
+    def updateLineNumberAreaWidth(self, _):
+
+        self.setViewportMargins(self.lineNumberAreaWidth(), 0, 0, 0)
+
+    def updateLineNumberArea(self, rect, dy):
+        if dy:
+            self.lineNumberArea.scroll(0,dy)
+        else:
+            self.lineNumberArea.update(rect.x(), rect.y(), self.lineNumberArea.width(), rect.height())
+            self.lineNumberArea.setFixedWidth(self.lineNumberArea.width())
+
+
+        if rect.contains(self.viewport().rect()):
+            self.updateLineNumberAreaWidth(0)
+
+    def resizeEvent(self, event):
+
+        super().resizeEvent(event)
+
+        cr = self.contentsRect()
+
+        self.lineNumberArea.setGeometry(cr.left(), cr.top(), self.lineNumberAreaWidth(), cr.height())
+
+    def lineNumberAreaPaintEvent(self, event):
+
+        painter = QPainter(self.lineNumberArea)
+
+        painter.fillRect(event.rect(), QColor("transparent"))
+
+        block = self.firstVisibleBlock()
+        blockNumber = block.blockNumber()
+
+        top = self.blockBoundingGeometry(block).translated(self.contentOffset()).top()
+        bottom = top + self.blockBoundingRect(block).height()
+
+        height = self.fontMetrics().height()
+
+        while block.isValid() and (top <= event.rect().bottom()):
+
+            if block.isVisible() and (bottom >= event.rect().top()):
+                number = str(blockNumber + 1)
+                painter.setPen(QColor("#bfbfbf"))
+                painter.drawText(-89, top, self.lineNumberArea.width(), height, Qt.AlignRight, number)
+
+            block = block.next()
+
+
+            top = bottom
+
+            bottom = top + self.blockBoundingRect(block).height()
+            blockNumber += 1
+
+    def zoom(self , angleDelta):
+        if angleDelta.y()< 0:
+            self.zoomOut(1)
+        elif angleDelta.y() > 0:
+            self.zoomIn(5)
+
+    def wheelEvent(self, event):
+        if (event.modifiers() & QtCore.Qt.ControlModifier):
+            self.zoom(event.angleDelta())
 class CodeWindow(QWidget):
     def __init__(self):
         super(CodeWindow , self).__init__()
@@ -25,15 +125,22 @@ class CodeWindow(QWidget):
         self.layout.addStretch(-1)
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setMinimumSize(1080,700)
+        self.font_size = 18
 
-        
         self.initLayout()
         self.initWidgets()
         self.initProblemScreen()
         self.initCodePage()
 
-        
+        self.actionZoomIn = QAction('Zoom In', self)
+        self.actionZoomOut = QAction('Zoom Out', self)
 
+        self.codeScreen1.addAction(self.actionZoomIn)
+        self.codeScreen1.addAction(self.actionZoomOut)
+
+        self.actionZoomIn.triggered.connect(self.action_ZoomIn)
+        self.actionZoomOut.triggered.connect(self.action_ZoomOut)
+        
         ###########################
         ##Adding Widgets To CodeScreen
         ###########################
@@ -219,13 +326,13 @@ class CodeWindow(QWidget):
         ####################################################
         ##CodeScreen
         ####################################################
-        self.codeScreen1 = QPlainTextEdit()
+        self.codeScreen1 = QCodeEdit()
         self.codeScreen1.setFixedHeight(500)
         self.codeScreen1.setStyleSheet("color:white;")
         self.highlight = syntax_pars.PythonHighlighter(self.codeScreen1.document())
         self.codeScreen1.show()
 
-        self.codePrewiew = QPlainTextEdit()
+        self.codePrewiew = QCodeEdit()
         self.codePrewiew.setFixedHeight(100)
         self.codePrewiew.setStyleSheet("color:white;")
         self.highlighter = syntax_pars.PythonHighlighter(self.codePrewiew.document())
@@ -242,7 +349,10 @@ class CodeWindow(QWidget):
     def status_btn_clicked(self):
         self.problems_stacked_widgets.setCurrentIndex(2)
 
-
+    def action_ZoomOut(self):
+        self.codeScreen1.zoom(-1)
+    def action_ZoomIn(self):
+        self.codeScreen1.zoom(+1)
 class CodeScreenBar(QWidget):
     def __init__(self, parent):
         super(CodeScreenBar, self).__init__()
@@ -339,6 +449,10 @@ class CodeScreenBar(QWidget):
             self.btn_max.disconnect()
             self.btn_max.setText("☐")
             self.btn_max.clicked.connect(self.btn_max_clicked)
+
+
+
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

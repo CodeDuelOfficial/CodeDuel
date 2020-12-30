@@ -1,6 +1,9 @@
 import sys
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QColor, QTextCharFormat, QFont, QSyntaxHighlighter
+import builtins
+from keyword import kwlist
+
 
 
 def format(color, style=''):
@@ -24,17 +27,17 @@ def format(color, style=''):
 
 
 # Syntax styles that can be shared by all languages
-
 STYLES = {
-    'keyword': format([200, 120, 50], 'bold'),
+    'keyword': format([197, 134, 192], 'bold'),
     'operator': format([150, 150, 150]),
     'brace': format('darkGray'),
     'defclass': format([220, 220, 255], 'bold'),
     'string': format([20, 110, 100]),
     'string2': format([30, 120, 110]),
-    'comment': format([128, 128, 128]),
-    'self': format([150, 85, 140], 'italic'),
+    'comment': format([117, 113, 94]),
+    'self': format([190, 134, 192], 'italic'),
     'numbers': format([100, 150, 190]),
+    'builtin' : format([249, 38, 114] , 'bold'),
 }
 
 
@@ -44,14 +47,7 @@ class PythonHighlighter(QSyntaxHighlighter):
     # Python keywords
 
 
-    keywords = [
-        'and', 'assert', 'break', 'class', 'continue', 'def',
-        'del', 'elif', 'else', 'except', 'exec', 'finally',
-        'for', 'from', 'global', 'if', 'import', 'in',
-        'is', 'lambda', 'not', 'or', 'pass', 'print',
-        'raise', 'return', 'try', 'while', 'yield',
-        'None', 'True', 'False',
-    ]
+    keywords = list(kwlist)
 
     # Python operators
     operators = [
@@ -71,6 +67,11 @@ class PythonHighlighter(QSyntaxHighlighter):
         '\{', '\}', '\(', '\)', '\[', '\]',
     ]
 
+    builtin = []
+    for i in dir(builtins):
+        builtin.append(i)
+
+
     def __init__(self, document):
         QSyntaxHighlighter.__init__(self, document)
 
@@ -89,6 +90,9 @@ class PythonHighlighter(QSyntaxHighlighter):
                   for o in PythonHighlighter.operators]
         rules += [(r'%s' % b, 0, STYLES['brace'])
                   for b in PythonHighlighter.braces]
+        rules += [(r'%s' % a, 0, STYLES['builtin'])
+                  for a in PythonHighlighter.builtin]
+        
 
         # All other rules
         rules += [

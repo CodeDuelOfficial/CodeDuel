@@ -744,6 +744,9 @@ class HomeScreen(QWidget):
         }""")
         self.cancel_btn.clicked.connect(self.cancel_btn_animation)
 
+    def theme_market_btn_clicked(self):
+        pass
+
     #edit profile button clicked
     def edit_profile_btn_clicked(self , scroll):
         self.profile_settings_scroll.hide()

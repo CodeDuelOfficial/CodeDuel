@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import*
 from PyQt5.QtCore import*
 from PyQt5.QtGui import*
 import sys
+import os
 
 def mask_image(imgdata, imgtype='jpg', size=256):
     """Return a ``QPixmap`` from *imgdata* masked with a smooth circle.
@@ -72,8 +73,8 @@ class HomeScreen(QWidget):
         self.setStyleSheet("background-color:#262626;")
         self.mainLayout.setContentsMargins(0,0,0,0)
         self.sizegrip = QtWidgets.QSizeGrip(self)
-        self.setWindowFlags(Qt.FramelessWindowHint |  QtCore.Qt.WindowStaysOnTopHint)
-        self.setMinimumSize(1080,700)
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setMinimumSize(800,600)
         self.setLayout(self.mainLayout)
         
         self.pp_path = "Buttons/unnamed.gif"
@@ -406,11 +407,13 @@ class HomeScreen(QWidget):
         
         #edit profile button clicked
         self.edit_profile_layout.addWidget(self.edit_profile_pp)
+        self.edit_profile_layout.addWidget(self.change_photo)
         self.edit_profile_layout.addWidget(self.edit_username)
         self.edit_profile_layout.addWidget(self.edit_email)
         self.edit_profile_layout.addLayout(self.edit_buttons_layout) 
         self.edit_buttons_layout.addWidget(self.save_changes_btn)
         self.edit_buttons_layout.addWidget(self.cancel_btn)
+        
 
         #sizegrip
         self.mainLayout.addWidget(self.sizegrip,0,Qt.AlignBottom|Qt.AlignRight)
@@ -628,6 +631,7 @@ class HomeScreen(QWidget):
         self.profile_settings_btn.setFixedWidth(90)
         self.profile_settings_btn.clicked.connect(self.profile_settings_btn_clicked)
 
+
         self.user_email = QLabel("Email")
         self.user_email.setAlignment(Qt.AlignHCenter)
         self.user_email.setStyleSheet("""QLabel{
@@ -693,6 +697,19 @@ class HomeScreen(QWidget):
         self.edit_profile_pp.setStyleSheet("""QLabel{
             border:none;
         }""")
+
+        self.change_photo = QPushButton("Change Avatar")
+        self.change_photo.setFixedHeight(35)
+        self.change_photo.setStyleSheet("""QPushButton{
+            background-color:#8C8C8C;
+            border:none;
+            margin-left:300px;
+            margin-right:300px;
+        }
+        QPushButton:hover{
+            border-bottom: 4px solid rgb(0,191,255);
+        }""")
+        self.change_photo.clicked.connect(self.change_photo_clicked)
 
         self.edit_username = QPlainTextEdit()
         self.edit_username.setStyleSheet("""QPlainTextEdit{
@@ -800,6 +817,15 @@ class HomeScreen(QWidget):
 
     def profile_settings_btn_clicked(self):
         self.settings_stacked_widget.setCurrentIndex(0)
+
+    #open file dialog
+    def change_photo_clicked(self):
+        self.filename = QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'))
+        if self.filename[0] == '':
+            print("ğ")
+        else:
+            self.pp_path = self.filename[0]
+            print(self.pp_path)
 
 
     

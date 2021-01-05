@@ -3,7 +3,7 @@ TR
 1-Öncelikle PyQt5'i pip ile indirin.
 2-Eğer PyQt5 varsa CodeDuelGUI dosyasının içine girin cmd'yi CodeDuelGUI dosyası içinde çalıştırın.
 3-Örnek;
-```python homescreen.py```
+<addr>python homescreen.py</addr>
 yazarak bir dosyayı çalıştırabilirsiniz artık!
 Not:main.py , loginform.py servera bağlı olmadığı için çalıştıramazsınız diğer dosyaları kolayca çalıştırabilirsiniz!
 Not2:Syntax_pars dosyasında syntax parser vardır onu çalıştırmanıza gerek yok.

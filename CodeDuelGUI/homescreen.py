@@ -58,6 +58,9 @@ def mask_image(imgdata, imgtype='jpg', size=256):
 
     return pm
 
+class User_Inputs(QPlainTextEdit):
+    pass
+
 class HomeScreen(QWidget):
     binds = {"add_friend": None, "search_friend": None} # binding names can change.
     def __init__(self):
@@ -86,6 +89,7 @@ class HomeScreen(QWidget):
         self.initProfilePage()
         self.initSettingsPage()
         self.initEditProfile()
+        self.initChangePassword()
         self.addWidgetsToLayout()
 
         self.show()
@@ -198,53 +202,12 @@ class HomeScreen(QWidget):
         #edit profile layout
         self.edit_profile_layout = QVBoxLayout()
         self.edit_profile_layout.setContentsMargins(0,0,0,0)
-        #edit profile scroll bar
-        self.edit_profile_scroll = QScrollArea()
-        self.edit_profile_scroll.setWidgetResizable(True)
-        self.edit_profile_scroll.setStyleSheet("""QScrollArea
-        {
-            border:none;
-            margin-right:5px;
-        }""")
-        self.edit_profile_scroll.verticalScrollBar().setStyleSheet(""" QScrollBar:vertical{
-        border: 2px solid grey;
-        background: #262626;
-        border-radius: 4px;
-        }
-        QScrollBar QWidget{
-            background-color:transparent;
-        }
-        QScrollBar::handle:vertical
-        {
-            background-color:#141414;         /* #605F5F; */
-            min-height: 5px;
-            border-radius: 4px;
-            width:50px;
-        }
-        
-        QScrollBar::add-line:vertical
-        {
-            margin: 0px 3px 0px 3px;
-            width: 10px;
-            height: 10px;
-            subcontrol-position: right;
-            subcontrol-origin: margin;
-            background:none;
-            color:none;
-        }
-
-        QScrollBar::sub-line:vertical
-        {
-            margin: 0px 3px 0px 3px;
-            height: 10px;
-            width: 10px;
-            subcontrol-position: left;
-            subcontrol-origin: margin;
-            background:none;
-            color:none;}""")
         #edit profile buttons layout
         self.edit_buttons_layout = QHBoxLayout()
         self.edit_buttons_layout.setContentsMargins(0,0,0,0)
+        #change password layout
+        self.change_password_layout = QVBoxLayout()
+        self.change_password_layout.setContentsMargins(0,0,0,0)
     #initialize HomeScreen
     def initHomePage(self):
         ######################################
@@ -337,16 +300,17 @@ class HomeScreen(QWidget):
         self.friends_page_objects_layout.addWidget(self.friends_Stacked_widget)
 
         self.myFriendsWidget = QWidget()
-        self.friends_Stacked_widget.addWidget(self.myFriendsWidget)
         self.myFriendsWidget.setLayout(self.myFriendsLayout)
 
         self.pending_rqst_widget = QWidget()
-        self.friends_Stacked_widget.addWidget(self.pending_rqst_widget)
         self.pending_rqst_widget.setLayout(self.pending_rqst_Layout)
 
         self.search_lineedit_widget = QWidget()
-        self.friends_Stacked_widget.addWidget(self.search_lineedit_widget)
         self.search_lineedit_widget.setLayout(self.searchLayout)
+
+        self.friends_Stacked_widget.addWidget(self.search_lineedit_widget)
+        self.friends_Stacked_widget.addWidget(self.pending_rqst_widget)
+        self.friends_Stacked_widget.addWidget(self.myFriendsWidget)
         #########################################################################
         ##settings widgets
         #########################################################################
@@ -357,15 +321,17 @@ class HomeScreen(QWidget):
         self.profile_settings_page.setLayout(self.profile_settings_layout)
         self.profile_settings_scroll.setWidget(self.profile_settings_page)
 
-        self.settings_stacked_widget.addWidget(self.profile_settings_scroll)
-
         self.edit_profile_page = QWidget()
         self.edit_profile_page.setLayout(self.edit_profile_layout)
-        self.edit_profile_scroll.setWidget(self.edit_profile_page)
-        self.settings_stacked_widget.addWidget(self.edit_profile_scroll)
 
+        self.change_password_page = QWidget()
+        self.change_password_page.setLayout(self.change_password_layout)
+
+        self.settings_stacked_widget.addWidget(self.profile_settings_scroll)
+        self.settings_stacked_widget.addWidget(self.edit_profile_page)
+        self.settings_stacked_widget.addWidget(self.change_password_page)
         
-
+        
     def addWidgetsToLayout(self):
         ##########################################
         ##Layouts
@@ -413,7 +379,9 @@ class HomeScreen(QWidget):
         self.edit_profile_layout.addLayout(self.edit_buttons_layout) 
         self.edit_buttons_layout.addWidget(self.save_changes_btn)
         self.edit_buttons_layout.addWidget(self.cancel_btn)
-        
+
+        self.change_password_layout.addWidget(self.old_password)
+        self.change_password_layout.addWidget(self.new_password)
 
         #sizegrip
         self.mainLayout.addWidget(self.sizegrip,0,Qt.AlignBottom|Qt.AlignRight)
@@ -761,25 +729,51 @@ class HomeScreen(QWidget):
         }""")
         self.cancel_btn.clicked.connect(self.cancel_btn_animation)
 
+    def initChangePassword(self):
+        self.old_password = QPlainTextEdit()
+        self.old_password.setPlainText("Old Password")
+        self.old_password.setStyleSheet("""QPlainTextEdit{
+            border: 3px solid dimgray;
+            border-style:outset;
+            border-width:2px;
+            border-radius:10px;
+            color:silver;
+            margin-left:300px;
+            margin-right:300px;
+            font-size:20px;
+        }""")
+        self.old_password.setFixedHeight(40)
+
+        self.new_password = QPlainTextEdit()
+        self.new_password.setPlainText("Old Password")
+        self.new_password.setStyleSheet("""QPlainTextEdit{
+            border: 3px solid dimgray;
+            border-style:outset;
+            border-width:2px;
+            border-radius:10px;
+            color:silver;
+            margin-left:300px;
+            margin-right:300px;
+            font-size:20px;
+        }""")
+        self.new_password.setFixedHeight(40)
+
     def theme_market_btn_clicked(self):
         pass
 
     #edit profile button clicked
     def edit_profile_btn_clicked(self , scroll):
-        self.profile_settings_scroll.hide()
-        
         QTimer.singleShot(400 , self.initEditProfile)
 
     #cancel btn clicked
     def cancel_btn_animation(self):
-        self.edit_profile_scroll.hide()
         QTimer.singleShot(400 , self.edit_cancelbtn_clicked)
 
     def edit_cancelbtn_clicked(self):
         self.settings_stacked_widget.setCurrentIndex(0)
     #change password
     def change_password_btn_clicked(self):
-        pass
+        self.settings_stacked_widget.setCurrentIndex(2)
     #home button clicked
     def home_button_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(0)
@@ -820,10 +814,12 @@ class HomeScreen(QWidget):
 
     #open file dialog
     def change_photo_clicked(self):
-        self.filename = QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'))
+        self.filter = "Images (*.png *.xpm .jpg)"
+        self.filename = QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),filter=self.filter)
         if self.filename[0] == '':
             print("ğ")
         else:
+            #this variable will connect to database
             self.pp_path = self.filename[0]
             print(self.pp_path)
 

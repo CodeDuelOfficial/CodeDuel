@@ -59,7 +59,21 @@ def mask_image(imgdata, imgtype='jpg', size=256):
     return pm
 
 class User_Inputs(QPlainTextEdit):
-    pass
+    def __init__(self , patern = None):
+        super().__init__(patern)
+        self.setStyleSheet("""
+        QPlainTextEdit{
+            border: 3px solid dimgray;
+            border-style:outset;
+            border-width:2px;
+            border-radius:10px;
+            color:silver;
+            margin-left:300px;
+            margin-right:300px;
+            font-size:20px;
+        }
+        """)
+
 
 class HomeScreen(QWidget):
     binds = {"add_friend": None, "search_friend": None} # binding names can change.
@@ -679,30 +693,11 @@ class HomeScreen(QWidget):
         }""")
         self.change_photo.clicked.connect(self.change_photo_clicked)
 
-        self.edit_username = QPlainTextEdit()
-        self.edit_username.setStyleSheet("""QPlainTextEdit{
-            border: 3px solid dimgray;
-            border-style:outset;border-width:2px;
-            border-radius:10px;
-            color:silver;
-            margin-left:300px;
-            margin-right:300px;
-            font-size:20px;
-        }""")
+        self.edit_username = User_Inputs()
         self.edit_username.setPlainText("Username")
         self.edit_username.setFixedHeight(40)
 
-        self.edit_email = QPlainTextEdit()
-        self.edit_email.setStyleSheet("""QPlainTextEdit{
-            border: 3px solid dimgray;
-            border-style:outset;
-            border-width:2px;
-            border-radius:10px;
-            color:silver;
-            margin-left:300px;
-            margin-right:300px;
-            font-size:20px;
-        }""")
+        self.edit_email = User_Inputs()
         self.edit_email.setPlainText("Email")
         self.edit_email.setFixedHeight(40)
 
@@ -730,32 +725,12 @@ class HomeScreen(QWidget):
         self.cancel_btn.clicked.connect(self.cancel_btn_animation)
 
     def initChangePassword(self):
-        self.old_password = QPlainTextEdit()
+        self.old_password = User_Inputs()
         self.old_password.setPlainText("Old Password")
-        self.old_password.setStyleSheet("""QPlainTextEdit{
-            border: 3px solid dimgray;
-            border-style:outset;
-            border-width:2px;
-            border-radius:10px;
-            color:silver;
-            margin-left:300px;
-            margin-right:300px;
-            font-size:20px;
-        }""")
         self.old_password.setFixedHeight(40)
 
-        self.new_password = QPlainTextEdit()
+        self.new_password = User_Inputs()
         self.new_password.setPlainText("Old Password")
-        self.new_password.setStyleSheet("""QPlainTextEdit{
-            border: 3px solid dimgray;
-            border-style:outset;
-            border-width:2px;
-            border-radius:10px;
-            color:silver;
-            margin-left:300px;
-            margin-right:300px;
-            font-size:20px;
-        }""")
         self.new_password.setFixedHeight(40)
 
     def theme_market_btn_clicked(self):

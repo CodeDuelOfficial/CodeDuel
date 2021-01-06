@@ -127,6 +127,8 @@ class CodeWindow(QWidget):
         self.setMinimumSize(1080,700)
         self.font_size = 18
 
+        self.button_map = {}
+
         self.initLayout()
         self.initWidgets()
         self.initProblemScreen()
@@ -144,13 +146,13 @@ class CodeWindow(QWidget):
         ###########################
         ##Adding Widgets To CodeScreen
         ###########################
-        self.problem_btns_layout.addWidget(self.problem_btn)
-        self.problem_btns_layout.addWidget(self.output_btn)
-        self.problem_btns_layout.addWidget(self.status_btn)
+        self.problem_btns_layout.addWidget(self.button_map["problem"])
+        self.problem_btns_layout.addWidget(self.button_map["output"])
+        self.problem_btns_layout.addWidget(self.button_map["status"])
         
         self.problem_layout.addWidget(self.problem_graphicsView)
         self.problemsLayout.addWidget(self.timeLabel , Qt.AlignTop)
-        self.problemsLayout.addWidget(self.endDuel_btn)
+        self.problemsLayout.addWidget(self.button_map["end_duel"])
 
         self.codescreenLayout.addWidget(self.codeScreen1)
         self.codescreenLayout.addWidget(self.codePrewiew)
@@ -231,10 +233,10 @@ class CodeWindow(QWidget):
         ###########################################
         ##Problem Screen
         ###########################################
-        self.problem_btn = QPushButton("Problem")
-        self.problem_btn.setFixedHeight(30)
-        self.problem_btn.clicked.connect(self.problem_btn_clicked)
-        self.problem_btn.setStyleSheet("""QPushButton{
+        self.button_map["problem"] = QPushButton("Problem")
+        self.button_map["problem"].setFixedHeight(30)
+        self.button_map["problem"].clicked.connect(self.problem_btn_clicked)
+        self.button_map["problem"].setStyleSheet("""QPushButton{
             border:none;
             background-color:#595959;
         }
@@ -242,10 +244,10 @@ class CodeWindow(QWidget):
             border-bottom:4px solid rgb(0,191,255);
         }""")
 
-        self.output_btn = QPushButton("Output")
-        self.output_btn.setFixedHeight(30)
-        self.output_btn.clicked.connect(self.output_btn_clicked)
-        self.output_btn.setStyleSheet("""QPushButton{
+        self.button_map["output"] = QPushButton("Output")
+        self.button_map["output"].setFixedHeight(30)
+        self.button_map["output"].clicked.connect(self.output_btn_clicked)
+        self.button_map["output"].setStyleSheet("""QPushButton{
             border:none;
             background-color:#595959;
         }
@@ -253,10 +255,10 @@ class CodeWindow(QWidget):
             border-bottom:4px solid rgb(0,191,255);
         }""")
 
-        self.status_btn = QPushButton("Status")
-        self.status_btn.setFixedHeight(30)
-        self.status_btn.clicked.connect(self.status_btn_clicked)
-        self.status_btn.setStyleSheet("""QPushButton{
+        self.button_map["status"] = QPushButton("Status")
+        self.button_map["status"].setFixedHeight(30)
+        self.button_map["status"].clicked.connect(self.status_btn_clicked)
+        self.button_map["status"].setStyleSheet("""QPushButton{
             border:none;
             background-color:#595959;
         }
@@ -311,9 +313,9 @@ class CodeWindow(QWidget):
         self.timeLabel.setStyleSheet("color:#E6FFED")
         self.timeLabel.setAlignment(Qt.AlignCenter)
 
-        self.endDuel_btn = QPushButton("End Duel")
-        self.endDuel_btn.setFixedHeight(30)
-        self.endDuel_btn.setStyleSheet("""QPushButton{
+        self.button_map["end_duel"] = QPushButton("End Duel")
+        self.button_map["end_duel"].setFixedHeight(30)
+        self.button_map["end_duel"].setStyleSheet("""QPushButton{
             border:none;
             background-color:#595959;
         }

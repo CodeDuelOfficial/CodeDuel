@@ -1,4 +1,3 @@
-  
 """
 @author: Efe Osman ASLANOĞLU (PyroSoft)
 @date: 8.10.2020
@@ -7,14 +6,14 @@ import time
 import socket
 
 class Connection:
-	def __init__(self, host, port):
+	def __init__(self, host, port, header=128):
 		# Client connection variables
 		self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.host, self.port = host, port 
 		self.conn.connect((self.host, self.port))
 		self.state = True
 		# Constant variables
-		self.HEADER = 128
+		self.HEADER = header
 	def _send(self, data):
 		self.conn.sendall(data)
 
@@ -42,3 +41,13 @@ class Connection:
 							connected = True
 			except GeneratorExit:
 				self.conn.close()
+				return self.host, self.conn
+
+
+# TEST
+if __name__ == "__main__":
+	client = Connection('localhost', 10000)
+	conn   = client.start()
+	next(conn)
+	conn.send(b'test')
+conn.close()

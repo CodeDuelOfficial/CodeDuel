@@ -25,9 +25,9 @@ class Connection:
 		while self.state:
 			try:
 			
-				send_data = yield  # Get data from outside of function
+				send_data = yield  # Get data from outside of function.
 				try:
-					self._send(send_data) # Short-cut for self.conn.send
+					self._send(send_data) # Short-cut for self.conn.send.
 					yield self._recv(self.HEADER)
 				except socket.error:
 

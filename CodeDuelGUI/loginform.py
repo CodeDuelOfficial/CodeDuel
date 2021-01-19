@@ -110,6 +110,7 @@ class LoginForm(QWidget):
 
         def getFunc(func):
             cls.binds[name] = func
+            return func
         return getFunc   
 
     #Login Database

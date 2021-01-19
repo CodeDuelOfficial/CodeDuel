@@ -50,4 +50,4 @@ if __name__ == "__main__":
 	conn   = client.start()
 	next(conn)
 	conn.send(b'test')
-conn.close()
+	conn.close()

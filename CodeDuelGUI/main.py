@@ -11,12 +11,12 @@ from connection import*
 # LoginForm bindings
 @LoginForm.bind(name = "login")
 def login(email,password):
-    values = {"email": email, "password": password}
+    values = dict((("email",email), ("password",password)))
     return conn.send(bytes(json.dumps({"command": "login", "values":values}), 'utf-8'))
 
 @LoginForm.bind(name = "register")
 def register(username,email,password):
-    values = {"username": username, "email": email, "password": password}
+    values = dict((("email",email), ("username",username),("password",password)))
     return conn.send(bytes(json.dumps({"command": "register", "values": values}), 'utf-8'))
 
 # HomeScreen bindings

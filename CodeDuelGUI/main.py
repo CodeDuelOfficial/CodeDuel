@@ -55,5 +55,5 @@ if __name__ == "__main__":
     next(conn) # start generator for yield assigment.
     main = Main(conn)
     main.start()
-    
+    conn.close()
     sys.exit(app.exec_())

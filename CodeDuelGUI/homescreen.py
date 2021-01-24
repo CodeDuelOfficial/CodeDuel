@@ -11,52 +11,6 @@ from PyQt5.QtGui import*
 import sys
 import os
 
-def mask_image(imgdata, imgtype='jpg', size=256):
-    """Return a ``QPixmap`` from *imgdata* masked with a smooth circle.
-
-    *imgdata* are the raw image bytes, *imgtype* denotes the image type.
-
-    The returned image will have a size of *size* × *size* pixels.
-
-    """
-    # Load image and convert to 32-bit ARGB (adds an alpha channel):
-    image = QImage.fromData(imgdata, imgtype)
-    image.convertToFormat(QImage.Format_ARGB32)
-
-    # Crop image to a square:
-    imgsize = min(image.width(), image.height())
-    rect = QRect(
-        (image.width() - imgsize) / 2,
-        (image.height() - imgsize) / 2,
-        imgsize,
-        imgsize,
-    )
-    image = image.copy(rect)
-
-    # Create the output image with the same dimensions and an alpha channel
-    # and make it completely transparent:
-    out_img = QImage(imgsize, imgsize, QImage.Format_ARGB32)
-    out_img.fill(Qt.transparent)
-
-    # Create a texture brush and paint a circle with the original image onto
-    # the output image:
-    brush = QBrush(image)        # Create texture brush
-    painter = QPainter(out_img)  # Paint the output image
-    painter.setBrush(brush)      # Use the image texture brush
-    painter.setPen(Qt.NoPen)     # Don't draw an outline
-    painter.setRenderHint(QPainter.Antialiasing, True)  # Use AA
-    painter.drawEllipse(0, 0, imgsize, imgsize)  # Actually draw the circle
-    painter.end()                # We are done (segfault if you forget this)
-
-    # Convert the image to a pixmap and rescale it.  Take pixel ratio into
-    # account to get a sharp image on retina displays:
-    pr = QWindow().devicePixelRatio()
-    pm = QPixmap.fromImage(out_img)
-    pm.setDevicePixelRatio(pr)
-    size *= pr
-    pm = pm.scaled(size, size, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-
-    return pm
 
 class User_Inputs(QPlainTextEdit):
     def __init__(self , patern = None):
@@ -84,8 +38,10 @@ class HomeScreen(QWidget):
 
         self.layout_map = {}
         self.button_map = {}
+        self.scroll_map = {}
 
         self.initLayout()
+        self.initScrollArea()
         
         self.main.addLayout(self.layout_map["objects"])
 
@@ -97,7 +53,7 @@ class HomeScreen(QWidget):
         self.setMinimumSize(800,600)
         self.setLayout(self.main)
         
-        self.pp_path = "Buttons/unnamed.gif"
+        self.pp_path = "Buttons/yılbasivenoox.png"
 
 
         self.initStackedWidgets()
@@ -120,6 +76,189 @@ class HomeScreen(QWidget):
             cls.binds[name] = func
         return getFunc 
     
+
+    def initScrollArea(self):
+        #settings profile scroll layout
+        self.scroll_map["profileSettings"] = QScrollArea()
+        self.scroll_map["profileSettings"].setWidgetResizable(True)
+        self.scroll_map["profileSettings"].setStyleSheet("""QScrollArea
+        {
+            border:none;
+            margin-right:5px;
+        }""")
+        self.scroll_map["profileSettings"].verticalScrollBar().setStyleSheet(""" QScrollBar:vertical{
+        border: 2px solid grey;
+        background: #262626;
+        border-radius: 4px;
+        }
+        QScrollBar QWidget{
+            background-color:transparent;
+        }
+        QScrollBar::handle:vertical
+        {
+            background-color:#141414;         /* #605F5F; */
+            min-height: 5px;
+            border-radius: 4px;
+            width:50px;
+        }
+        
+        QScrollBar::add-line:vertical
+        {
+            margin: 0px 3px 0px 3px;
+            width: 10px;
+            height: 10px;
+            subcontrol-position: right;
+            subcontrol-origin: margin;
+            background:none;
+            color:none;
+        }
+
+        QScrollBar::sub-line:vertical
+        {
+            margin: 0px 3px 0px 3px;
+            height: 10px;
+            width: 10px;
+            subcontrol-position: left;
+            subcontrol-origin: margin;
+            background:none;
+            color:none;}""")
+        
+        #friends myfriends scroll area
+        self.scroll_map["myFriends"] = QScrollArea()
+        self.scroll_map["myFriends"].setWidgetResizable(True)
+        self.scroll_map["myFriends"].setStyleSheet("""QScrollArea
+        {
+            border:none;
+            margin-right:5px;
+        }""")
+        self.scroll_map["myFriends"].verticalScrollBar().setStyleSheet(""" QScrollBar:vertical{
+        border: 2px solid grey;
+        background: #262626;
+        border-radius: 4px;
+        }
+        QScrollBar QWidget{
+            background-color:transparent;
+        }
+        QScrollBar::handle:vertical
+        {
+            background-color:#141414;         /* #605F5F; */
+            min-height: 5px;
+            border-radius: 4px;
+            width:50px;
+        }
+        
+        QScrollBar::add-line:vertical
+        {
+            margin: 0px 3px 0px 3px;
+            width: 10px;
+            height: 10px;
+            subcontrol-position: right;
+            subcontrol-origin: margin;
+            background:none;
+            color:none;
+        }
+
+        QScrollBar::sub-line:vertical
+        {
+            margin: 0px 3px 0px 3px;
+            height: 10px;
+            width: 10px;
+            subcontrol-position: left;
+            subcontrol-origin: margin;
+            background:none;
+            color:none;}""")
+
+
+        #friends search scroll area
+        self.scroll_map["search"] = QScrollArea()
+        self.scroll_map["search"].setWidgetResizable(True)
+        self.scroll_map["search"].setStyleSheet("""QScrollArea
+        {
+            border:none;
+            margin-right:5px;
+        }""")
+        self.scroll_map["search"].verticalScrollBar().setStyleSheet(""" QScrollBar:vertical{
+        border: 2px solid grey;
+        background: #262626;
+        border-radius: 4px;
+        }
+        QScrollBar QWidget{
+            background-color:transparent;
+        }
+        QScrollBar::handle:vertical
+        {
+            background-color:#141414;         /* #605F5F; */
+            min-height: 5px;
+            border-radius: 4px;
+            width:50px;
+        }
+        
+        QScrollBar::add-line:vertical
+        {
+            margin: 0px 3px 0px 3px;
+            width: 10px;
+            height: 10px;
+            subcontrol-position: right;
+            subcontrol-origin: margin;
+            background:none;
+            color:none;
+        }
+
+        QScrollBar::sub-line:vertical
+        {
+            margin: 0px 3px 0px 3px;
+            height: 10px;
+            width: 10px;
+            subcontrol-position: left;
+            subcontrol-origin: margin;
+            background:none;
+            color:none;}""")
+
+        #friends pending requests scroll area
+        self.scroll_map["pendingRequests"] = QScrollArea()
+        self.scroll_map["pendingRequests"].setWidgetResizable(True)
+        self.scroll_map["pendingRequests"].setStyleSheet("""QScrollArea
+        {
+            border:none;
+            margin-right:5px;
+        }""")
+        self.scroll_map["pendingRequests"].verticalScrollBar().setStyleSheet(""" QScrollBar:vertical{
+        border: 2px solid grey;
+        background: #262626;
+        border-radius: 4px;
+        }
+        QScrollBar QWidget{
+            background-color:transparent;
+        }
+        QScrollBar::handle:vertical
+        {
+            background-color:#141414;         /* #605F5F; */
+            min-height: 5px;
+            border-radius: 4px;
+            width:50px;
+        }
+        
+        QScrollBar::add-line:vertical
+        {
+            margin: 0px 3px 0px 3px;
+            width: 10px;
+            height: 10px;
+            subcontrol-position: right;
+            subcontrol-origin: margin;
+            background:none;
+            color:none;
+        }
+
+        QScrollBar::sub-line:vertical
+        {
+            margin: 0px 3px 0px 3px;
+            height: 10px;
+            width: 10px;
+            subcontrol-position: left;
+            subcontrol-origin: margin;
+            background:none;
+            color:none;}""")
+            
     #initialize Layouts
     def initLayout(self):
         #all objects layout
@@ -167,50 +306,6 @@ class HomeScreen(QWidget):
         #settings layout
         self.layout_map["settingsPage"] = QVBoxLayout()
         self.layout_map["settingsPage"].setContentsMargins(0,0,0,0)
-        #settings profile scroll layout
-        self.profile_settings_scroll = QScrollArea()
-        self.profile_settings_scroll.setWidgetResizable(True)
-        self.profile_settings_scroll.setStyleSheet("""QScrollArea
-        {
-            border:none;
-            margin-right:5px;
-        }""")
-        self.profile_settings_scroll.verticalScrollBar().setStyleSheet(""" QScrollBar:vertical{
-        border: 2px solid grey;
-        background: #262626;
-        border-radius: 4px;
-        }
-        QScrollBar QWidget{
-            background-color:transparent;
-        }
-        QScrollBar::handle:vertical
-        {
-            background-color:#141414;         /* #605F5F; */
-            min-height: 5px;
-            border-radius: 4px;
-            width:50px;
-        }
-        
-        QScrollBar::add-line:vertical
-        {
-            margin: 0px 3px 0px 3px;
-            width: 10px;
-            height: 10px;
-            subcontrol-position: right;
-            subcontrol-origin: margin;
-            background:none;
-            color:none;
-        }
-
-        QScrollBar::sub-line:vertical
-        {
-            margin: 0px 3px 0px 3px;
-            height: 10px;
-            width: 10px;
-            subcontrol-position: left;
-            subcontrol-origin: margin;
-            background:none;
-            color:none;}""")
         #profile settings layout
         self.layout_map["profileSettings"] = QVBoxLayout()
         self.layout_map["profileSettings"].setContentsMargins(0,0,0,0)
@@ -326,9 +421,13 @@ class HomeScreen(QWidget):
         self.search_lineedit_widget = QWidget()
         self.search_lineedit_widget.setLayout(self.layout_map["searchPage"])
 
-        self.friends_Stacked_widget.addWidget(self.search_lineedit_widget)
-        self.friends_Stacked_widget.addWidget(self.pending_rqst_widget)
-        self.friends_Stacked_widget.addWidget(self.myFriendsWidget)
+        self.scroll_map["myFriends"].setLayout(self.layout_map["myFriends_Page"])
+        self.scroll_map["search"].setLayout(self.layout_map["searchPage"])
+        self.scroll_map["pendingRequests"].setLayout(self.layout_map["pending_requests"])
+
+        self.friends_Stacked_widget.addWidget(self.scroll_map["search"])
+        self.friends_Stacked_widget.addWidget(self.scroll_map["pendingRequests"])
+        self.friends_Stacked_widget.addWidget(self.scroll_map["myFriends"])
         #########################################################################
         ##settings widgets
         #########################################################################
@@ -337,7 +436,7 @@ class HomeScreen(QWidget):
 
         self.profile_settings_page = QWidget()
         self.profile_settings_page.setLayout(self.layout_map["profileSettings"])
-        self.profile_settings_scroll.setWidget(self.profile_settings_page)
+        self.scroll_map["profileSettings"].setWidget(self.profile_settings_page)
 
         self.edit_profile_page = QWidget()
         self.edit_profile_page.setLayout(self.layout_map["editProfile"])
@@ -345,7 +444,7 @@ class HomeScreen(QWidget):
         self.change_password_page = QWidget()
         self.change_password_page.setLayout(self.layout_map["changePassword_page"])
 
-        self.settings_stacked_widget.addWidget(self.profile_settings_scroll)
+        self.settings_stacked_widget.addWidget(self.scroll_map["profileSettings"])
         self.settings_stacked_widget.addWidget(self.edit_profile_page)
         self.settings_stacked_widget.addWidget(self.change_password_page)
         
@@ -502,15 +601,14 @@ class HomeScreen(QWidget):
             font-size:32px;
         }""")
         
-        self.profile_photo_data= open(self.pp_path, 'rb').read()
-        self.profile_photo_pixmap = mask_image(self.profile_photo_data)
+        self.profile_photo_pixmap = QPixmap(self.pp_path)
+        self.profile_photo_pixmap.scaled(300,300,Qt.IgnoreAspectRatio , Qt.FastTransformation)
 
         self.profile_page_photo = QLabel()
         self.profile_page_photo.setAlignment(Qt.AlignCenter) 
         self.profile_page_photo.setPixmap(self.profile_photo_pixmap)
         self.profile_page_photo.setFixedHeight(300)
         self.profile_page_photo.setStyleSheet("""QLabel{
-            margin:300px;
             border:none;
         }""")
         
@@ -641,7 +739,6 @@ class HomeScreen(QWidget):
         self.profile_settings_photo.setStyleSheet("""QLabel{
             border:none;
         }""")
-
         #edit profile button 
         self.button_map["edit_profile"] = QPushButton("Edit Profile")
         self.button_map["edit_profile"].setStyleSheet("""QPushButton{
@@ -759,10 +856,11 @@ class HomeScreen(QWidget):
     #friends button clicked
     def friends_btn_clicked(self):
         self.main_objects_stacked_widget.setCurrentIndex(1)
+        self.friends_Stacked_widget.setCurrentIndex(2)
 
     #friends page topmenu my friends button clicked
     def myfriends_btn_clicked(self):
-        self.friends_Stacked_widget.setCurrentIndex(0)
+        self.friends_Stacked_widget.setCurrentIndex(2)
 
     #friends page topmenu pending requests button clicked
     def pending_rqst_btn_clicked(self):
@@ -770,7 +868,7 @@ class HomeScreen(QWidget):
 
     #friends page topmenu search button clicked
     def search_btn_clicked(self):
-        self.friends_Stacked_widget.setCurrentIndex(2)
+        self.friends_Stacked_widget.setCurrentIndex(0)
 
     #main left menu profile photo clicked
     def profile_photo_clicked(self):
